@@ -23,7 +23,7 @@ function BlogList({data}:{data: Post[]}) {
         <h1 className="text-4xl">Blogs</h1>
         {data.map((item)=>{
             // return <h1>{item.slug.current}</h1>
-            return <Link href={`detail/${item.slug.current}`}>
+            return <Link href={`/post/${item.slug.current}`}>
               <Card className='w-full my-5'>
               <div className='flex items-center'>
                 <CardHeader>
@@ -44,7 +44,7 @@ function BlogList({data}:{data: Post[]}) {
               </div>
               <CardFooter>
               {item.categories.map((item)=>{
-                return <Badge variant="outline" className='mx-3'>{item.title}</Badge>
+                return <Badge variant="outline" key={item._id} className='mx-3'>{item.title}</Badge>
               })}
               </CardFooter>
             </Card>

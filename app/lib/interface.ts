@@ -3,15 +3,17 @@ export interface Post {
   author: {
     name: string;
     image:string;
+    bio: any;
   };
   mainImage: string;
   categories: [
     {
       title: string;
+      _id: string;
     }
   ];
   overview: string;
-  content: any;
+  body: any;
   publishedAt: string;
   _id: string;
   description:string;
