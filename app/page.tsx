@@ -1,9 +1,24 @@
 import Link from "next/link";
 import { Post } from "./lib/interface";
+import { Premium } from "./components/Premium";
+import Tags from "./components/Tags";
 import { client } from "./lib/sanity";
+import { Separator } from "@/components/ui/separator";
 
+import BlogList from "./components/BlogList";
 async function getData() {
-  const query = `*[_type == "post"]`;
+  const query = `*[_type == "post"]{
+    ...,
+    categories[]->,
+    author->
+  }`;
+
+  const data = await client.fetch(query);
+
+  return data;
+}
+async function getTag() {
+  const query = `*[_type == "category"]`;
 
   const data = await client.fetch(query);
 
@@ -11,45 +26,16 @@ async function getData() {
 }
 
 export default async function IndexPage() {
-  const data = (await getData()) as Post[];
-
+  const data = (await getData());
+  const tag = await getTag()
   return (
-    <div className="divide-y divide-gray-200 dark:divide-gray-700">
-      <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-        <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-          All Posts
-        </h1>
+    <main className="flex justify-between relative">
+        <BlogList data={data}/>
+        <Separator className='w-0.5 mx-10 opacity-70 min-h-screen'/>
+      <div className="w-4/12 flex flex-col items-center sticky top-0">
+        <Premium/>
+        <Tags data={tag}/>
       </div>
-
-      <ul>
-        {data.map((post) => (
-          <li key={post._id} className="py-4">
-            <article className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
-              <div>
-                <p className="text-base font-medium leading-6 text-teal-500">
-                  {new Date(post._createdAt).toISOString().split("T")[0]}
-                </p>
-              </div>
-
-              <Link
-                href={`/post/${post.slug.current}`}
-                prefetch
-                className="space-y-3 xl:col-span-3"
-              >
-                <div>
-                  <h3 className="text-2xl font-bold leading-8 tracking-tight text-gray-900 dark:text-gray-100">
-                    {post.title}
-                  </h3>
-                </div>
-
-                <p className="prose max-w-none text-gray-500 dark:text-gray-400 line-clamp-2">
-                  {post.overview}
-                </p>
-              </Link>
-            </article>
-          </li>
-        ))}
-      </ul>
-    </div>
+    </main>
   );
 }
