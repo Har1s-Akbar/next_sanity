@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Tag } from '../lib/interface'
+import Link from 'next/link'
 
 function Tags({data}:{data: Tag[]}) {
   return (
@@ -10,7 +11,9 @@ function Tags({data}:{data: Tag[]}) {
       <div className=''>
         {data.map((item)=>{
             return <button>
-            <Badge variant="outline" className='mx-5 py-2 hover:bg-foreground hover:text-secondary my-5 bg-cover'>{item.title}</Badge>
+              <Link href={`/tags/${item.slug.current}`}>
+                <Badge variant="outline" className='mx-5 py-2 hover:bg-foreground hover:text-secondary my-5 bg-cover'>{item.title}</Badge>
+              </Link>
             </button>
             })}
         </div>

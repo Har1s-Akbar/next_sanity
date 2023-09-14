@@ -28,4 +28,16 @@ export interface Tag{
   title: string;
   description: string;
   _id:string;
+  slug:{
+    current:string;
+  }
+}
+
+export interface TagPost{
+  description: string;
+  slug:{
+    current:string;
+  };
+  title:string;
+  posts:any;
 }

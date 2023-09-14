@@ -1,11 +1,13 @@
 import { Post } from "@/app/lib/interface";
 import { client } from "@/app/lib/sanity";
 import { urlFor } from "@/app/lib/sanityImageUrl";
-import PortableText from "react-portable-text";
+import { PortableText } from "@portabletext/react";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { PortableTextComponent } from "@/app/components/RichText";
+
+export const revalidate = 60
 
 async function getData(slug: string) {
   const query = `*[_type == "post" && slug.current == "${slug}"][0]{
@@ -41,7 +43,7 @@ export default async function SlugPage({
             <Separator className="w-1/2 my-5"/>
             <div className="flex items-center">
               <Avatar className='w-14 h-14'>
-                  <AvatarImage src={urlFor(data.author.image).url()} />
+                  <AvatarImage src={urlFor(data.author.image).width(200).height(200).url()} />
                   <AvatarFallback>{data.author.name}</AvatarFallback>
               </Avatar>
               <div className="mx-3">
@@ -56,43 +58,13 @@ export default async function SlugPage({
         <div>
         <div className="prose max-w-none w-7/12 m-auto pb-8 pt-10 dark:prose-invert prose-lg">
             <PortableText
-            projectId="2hdzu35m"
-            dataset="production"
-              content={data.body}
-              serializers={PortableTextComponent}
+              value={data.body}
+              // serializers={PortableTextComponent}
+              components={PortableTextComponent}
             />
         </div>
         </div>
       </div>
-      {/* <header className="pt-6 xl:pb-6">
-      <Image src={urlFor(data.mainImage).url()} width={600} alt={data.title} height={1000} className="rounded-lg my-3 drop-shadow"/>
-        <div className="space-y-1 text-center">
-          <div className="space-y-10">
-            <div>
-              <p className="text-base font-medium leading-6 text-teal-500">
-                {new Date(data._createdAt).toISOString().split("T")[0]}
-              </p>
-            </div>
-          </div>
-
-          <div>
-            <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
-              {data.title}
-            </h1>
-          </div>
-        </div>
-      </header>
-
-      <div className="divide-y divide-gray-200 pb-7 dark:divide-gray-700 xl:divide-y-0">
-        <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
-          <div className="prose max-w-none pb-8 pt-10 dark:prose-invert prose-lg">
-            <PortableText
-              value={data.body}
-              components={PortableTextComponent}
-            />
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 }

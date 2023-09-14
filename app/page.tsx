@@ -5,6 +5,8 @@ import Tags from "./components/Tags";
 import { client } from "./lib/sanity";
 import { Separator } from "@/components/ui/separator";
 
+export const revalidate = 30
+
 import BlogList from "./components/BlogList";
 async function getData() {
   const query = `*[_type == "post"]{

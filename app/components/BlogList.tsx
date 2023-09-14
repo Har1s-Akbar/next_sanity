@@ -20,7 +20,6 @@ function BlogList({data}:{data: Post[]}) {
   return (
     <main className='w-6/12 mx-auto'>
       <div className="flex flex-col items-center">
-        <h1 className="text-4xl">Blogs</h1>
         {data.map((item)=>{
             // return <h1>{item.slug.current}</h1>
             return <Link href={`/post/${item.slug.current}`}>
