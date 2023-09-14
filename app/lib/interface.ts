@@ -4,12 +4,18 @@ export interface Post {
     name: string;
     image:string;
     bio: any;
+    slug:{
+      current:string;
+    };
   };
   mainImage: string;
   categories: [
     {
       title: string;
       _id: string;
+      slug:{
+        current:string
+      };
     }
   ];
   overview: string;

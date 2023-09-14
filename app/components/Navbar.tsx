@@ -26,9 +26,9 @@ function Nav() {
         <NavigationMenu>
           <NavigationMenuList>
               <NavigationMenuItem className='hover:bg-secondary transition duration-300 delay-300 ease-in-out py-2 px-3 rounded'>
-                <Link href="/home" legacyBehavior passHref>
+                <Link href="/" legacyBehavior passHref>
                   <NavigationMenuLink>
-                    Documentation
+                    Home
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>

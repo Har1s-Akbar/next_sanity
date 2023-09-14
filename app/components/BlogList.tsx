@@ -16,9 +16,8 @@ import { Post} from '../lib/interface'
 
 function BlogList({data}:{data: Post[]}) {
     
-//   console.log(data.map((item)=> {return item.slug.current}))
   return (
-    <main className='w-6/12 mx-auto'>
+    <main className='w-11/12 mx-auto'>
       <div className="flex flex-col items-center">
         {data.map((item)=>{
             // return <h1>{item.slug.current}</h1>
@@ -41,11 +40,13 @@ function BlogList({data}:{data: Post[]}) {
                     <Image src={urlFor(item.mainImage).url()} width={200} alt={item.title} height={200} className="rounded-lg my-3 drop-shadow"/>
                 </CardContent>
               </div>
-              <CardFooter>
+              {/* <CardFooter>
               {item.categories.map((item)=>{
-                return <Badge variant="outline" key={item._id} className='mx-3'>{item.title}</Badge>
-              })}
-              </CardFooter>
+                return <Link href={`/tags/${item.slug.current}`}>
+                          <Badge key={item._id} className='mx-3'>{item.title}</Badge>
+                      </Link>
+                })}
+              </CardFooter> */}
             </Card>
             </Link>
           })}

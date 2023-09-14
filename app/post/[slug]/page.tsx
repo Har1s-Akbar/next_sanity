@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { PortableTextComponent } from "@/app/components/RichText";
+import Link from "next/link";
 
 export const revalidate = 60
 
@@ -48,7 +49,6 @@ export default async function SlugPage({
               </Avatar>
               <div className="mx-3">
               <h1 className="text-2xl font-semibold tracking-wide">{data.author.name}</h1>
-              {/* <Separator className="my-2"/> */}
               <p className="opacity-70 text-sm">Author</p>
               </div>
             </div>
@@ -59,7 +59,6 @@ export default async function SlugPage({
         <div className="prose max-w-none w-7/12 m-auto pb-8 pt-10 dark:prose-invert prose-lg">
             <PortableText
               value={data.body}
-              // serializers={PortableTextComponent}
               components={PortableTextComponent}
             />
         </div>
