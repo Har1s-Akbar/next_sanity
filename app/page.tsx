@@ -32,7 +32,7 @@ export default async function IndexPage() {
   const tag = await getTag()
   return (
       <main className="flex w-full">
-        <div className="flex flex-col w-9/12 m-auto items-center">
+        <div className="flex flex-col w-9/12 items-center mx-auto">
           <h1 className="text-4xl mb-7">Blogs</h1>
           <BlogList data={data}/>
         </div>
