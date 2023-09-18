@@ -1,26 +1,17 @@
 import { client } from "./lib/sanity";
 import { Separator } from "@/components/ui/separator";
-import { Premium } from "./components/Premium";
-import Tags from "./components/Tags";
 
 export const revalidate = 60
 
-import BlogList from "./components/BlogList";
+import Cover from "./components/Cover";
+import BlogHome from "./components/BlogHome";
+
 async function getData() {
   const query = `*[_type == "post"]{
     ...,
     categories[]->,
     author->
-  }`;
-
-  const data = await client.fetch(query);
-
-  return data;
-}
-
-
-async function getTag() {
-  const query = `*[_type == "category"]`;
+  } | order(publishedAt desc)`;
 
   const data = await client.fetch(query);
 
@@ -29,18 +20,18 @@ async function getTag() {
 
 export default async function IndexPage() {
   const data = (await getData());
-  const tag = await getTag()
   return (
-      <main className="flex w-full">
-        <div className="flex flex-col w-9/12 items-center mx-auto">
-          <h1 className="text-4xl mb-7">Blogs</h1>
-          <BlogList data={data}/>
+      <main className="flex w-full flex-col justify-center">
+        <div className="flex flex-col items-center mx-auto">
+          <h1 className="text-4xl mb-7 font-bold">Blogs</h1>
+          <Cover data={data}/>
         </div>
-        <Separator className='w-0.5 mx-10 opacity-70 min-h-screen'/>
-            <div className="w-4/12 flex flex-col items-center sticky top-0">
-              <Premium/>
-              <Tags data={tag}/>
+        {/* <Separator className=" my-5 h-0.5"/> */}
+        <div>
+            <div className="w-full flex flex-col items-center">
+              <BlogHome data={data}/>
             </div>
+        </div>
       </main>
   );
 }

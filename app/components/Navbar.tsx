@@ -97,9 +97,7 @@ function Nav() {
           Sign in
           </Link>
         </button>
-        <button>
-          <Themebutton/>
-        </button>
+        <Themebutton/>
       </div>
     </main>
   )

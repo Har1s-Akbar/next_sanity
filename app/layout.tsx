@@ -2,11 +2,7 @@ import Navbar from "./components/Navbar";
 import { Providers } from "./components/Providers";
 import "./globals.css";
 import { Inter } from "next/font/google";
-import { client } from "./lib/sanity";
-import Tags from "./components/Tags";
-import { Premium } from "./components/Premium";
-import { Separator } from "@/components/ui/separator";
-
+import { GlobalContextProvider } from "./context/context";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
@@ -27,12 +23,14 @@ export default async function RootLayout({
       <body
         className={` ${inter.className} bg-white text-black dark:bg-gray-900 dark:selection:bg-gray-900 dark:text-white h-full selection:bg-gray-50`}
       >
-        <Providers>
-          <Navbar />
+        <GlobalContextProvider>
+          <Providers>
+            <Navbar />
             <main className="flex mx-auto px-4 sm:px-6 lg:px-8 justify-between">
-              {children}
-          </main>
-        </Providers>
+                {children}
+            </main>
+          </Providers>
+        </GlobalContextProvider>
       </body>
     </html>
   );

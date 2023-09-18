@@ -1,5 +1,4 @@
 import Link from 'next/link'
-
 import {
   Card,
   CardContent,
@@ -14,17 +13,18 @@ import { urlFor } from '../lib/sanityImageUrl'
 import Image from 'next/image'
 import { Post} from '../lib/interface'
 
-function BlogList({data}:{data: Post[]}) {
-    
-  return (
-    <main className='w-10/12 mx-auto'>
-      <div className="flex flex-col items-center">
-        {data.map((item)=>{
+
+function BlogList({data}:{data : Post[]}) {
+    return (
+        <main className='flex items-center flex-col justify-center'>
+            {/* <h1 className='text-3xl font-semibold'>Blogs</h1> */}
+            <div className='flex flex-col items-center'>
+            {data.slice(1).map((item)=>{
             // return <h1>{item.slug.current}</h1>
-            return <Link href={`/post/${item.slug.current}`}>
-              <Card className='w-full my-5'>
-              <div className='flex items-center'>
-                <CardHeader>
+            return <Card className='my-5 w-10/12'>
+                  <Link href={`/post/${item.slug.current}`}>
+              <div className='flex items-center w-full'>
+                <CardHeader className=''>
                     <div className="flex my-2 items-center">
                     <Avatar className='w-5 h-5'>
                     <AvatarImage src={urlFor(item.author.image).url()} />
@@ -33,13 +33,16 @@ function BlogList({data}:{data: Post[]}) {
                     <p className="text-sm mx-2">{item.author.name}</p>
                     <p className="text-sm mx-2 opacity-80 italic">{new Date(item.publishedAt).toDateString()}</p>
                     </div>
-                    <CardTitle className='text-2xl'>{item.title}</CardTitle>
-                    <CardDescription>{item.description}</CardDescription>
+                    <div className='w-11/12'>
+                        <CardTitle className='text-2xl'>{item.title}</CardTitle>
+                        <CardDescription className='truncate ... my-2'>{item.description}</CardDescription>
+                    </div>
                 </CardHeader>
                 <CardContent>
                     <Image src={urlFor(item.mainImage).url()} width={200} alt={item.title} height={200} className="rounded-lg my-3 drop-shadow"/>
                 </CardContent>
               </div>
+            </Link>
               <CardFooter>
               {item.categories.map((item)=>{
                 return <Link href={`/tags/${item.slug.current}`}>
@@ -48,11 +51,10 @@ function BlogList({data}:{data: Post[]}) {
                 })}
               </CardFooter>
             </Card>
-            </Link>
           })}
-      </div>
-    </main>
-  )
+            </div>
+        </main>
+    )
 }
 
 export default BlogList
