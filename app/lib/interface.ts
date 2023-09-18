@@ -47,3 +47,13 @@ export interface TagPost{
   title:string;
   posts:any;
 }
+
+export interface Author{
+  name: string;
+  image: any;
+  bio:any;
+  slug:{
+    current:string
+  };
+  _createdAt: string;
+}

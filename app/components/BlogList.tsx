@@ -27,7 +27,7 @@ function BlogList({data}:{data : Post[]}) {
                 <CardHeader className=''>
                     <div className="flex my-2 items-center">
                     <Avatar className='w-5 h-5'>
-                    <AvatarImage src={urlFor(item.author.image).url()} />
+                    <AvatarImage src={urlFor(item.author.image).width(300).height(300).url()} />
                     <AvatarFallback>{item.author.name}</AvatarFallback>
                     </Avatar>
                     <p className="text-sm mx-2">{item.author.name}</p>
