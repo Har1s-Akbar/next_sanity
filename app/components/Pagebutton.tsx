@@ -4,7 +4,7 @@ import { useGlobalContext } from "../context/context"
 
 function Pagebutton() {
     const {setPage, page} = useGlobalContext()
-    console.log(page)
+    // console.log(page)
   return (
     <main>
         {page}

@@ -8,9 +8,6 @@ module.exports = {
     './src/**/*.{ts,tsx}',
 	],
   theme: {
-    gridTemplateColumns: {
-      'footer': 'minmax(100px, 400px) minmax(300px, 1fr) minmax(0, 1fr)',
-    },
     container: {
       center: true,
       padding: "2rem",
@@ -19,6 +16,9 @@ module.exports = {
       },
     },
     extend: {
+    gridTemplateColumns: {
+      'footer': 'minmax(100px, 400px) minmax(300px, 1fr) minmax(0, 1fr)',
+    },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

@@ -2,10 +2,9 @@ import BlogList from "./BlogList"
 import Tags from "./Tags"
 import { Premium } from "./Premium"
 import { Separator } from "@/components/ui/separator"
-import Author from "./Author"
-  
+import {Author} from "./Author"
+
 function BlogHome({data, author}: any) {
-  // console.log(data.author)
   return (
     <main className="flex w-full py-5 rounded-lg justify-center">
         <div className="flex w-7/12 flex-col items-center mx-auto">
@@ -16,7 +15,8 @@ function BlogHome({data, author}: any) {
           <div className="w-4/12 flex flex-col items-center sticky top-0">
             <Premium/>
             <Tags/>
-            <Author data={data.author}/>
+            {/* <Author/> */}
+          <Author data={data.author}/>
           </div>
       </main>
   )
