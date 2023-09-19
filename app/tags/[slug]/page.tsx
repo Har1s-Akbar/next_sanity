@@ -3,7 +3,7 @@ import { urlFor } from '@/app/lib/sanityImageUrl';
 import { TagPost } from '@/app/lib/interface';
 import { client } from '@/app/lib/sanity';
 import { Badge, badgeVariants } from '@/components/ui/badge';
-import BlogList from '@/app/components/Cover';
+import BlogList from '@/app/components/BlogList';
 import { Separator } from '@/components/ui/separator';
 import { Premium } from '@/app/components/Premium';
 import Tags from '@/app/components/Tags';
@@ -28,7 +28,6 @@ async function page({
     params: { slug: string };
   }) {
     const data = await getData(params.slug) as TagPost
-    console.log(data)
   return (
       <main className="flex w-full justify-center">
         <div className='flex flex-col w-7/12 items-center mx-auto'>

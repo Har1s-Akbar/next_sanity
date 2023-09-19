@@ -13,6 +13,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
 import { Author } from "../lib/interface"
+import Link from "next/link";
 
 export function Author({data}:{data: Author[]}) {
   return (
@@ -20,7 +21,8 @@ export function Author({data}:{data: Author[]}) {
         <h1 className="text-3xl font-semibold my-5">Authors</h1>
         <div className="grid grid-cols-2 gap-x-5 gap-y-2">
         {data.map((item)=>{
-            return  <HoverCard>
+            return <Link href={`/author/${item.slug.current}`}>  
+            <HoverCard>
         <HoverCardTrigger asChild>
             <Button variant="ghost" className="py-5 px-6">
                 <div className="flex my-2 items-center justify-center">
@@ -39,13 +41,14 @@ export function Author({data}:{data: Author[]}) {
                 <AvatarFallback>{item.name}</AvatarFallback>
             </Avatar>
             <div className="space-y-1">
-                <div className="flex items-center justify-between w-1/2">    
+                <div className="flex items-center justify-between w-24">    
                     <h4 className="text-sm font-bold">{item.name}</h4>
                     <span>-</span>
                     <p className="text-xs opacity-70 font-normal">Author</p>
                 </div>
                 <PortableText value={item.bio}/>
                 <div className="flex items-center pt-2">
+                <p className="mr-2 text-xs font-light italic">Joined</p>
                 <CalendarIcon className="mr-2 h-4 w-4 opacity-70" />{" "}
                 <span className="text-xs text-muted-foreground">
                     {new Date(item._createdAt).toDateString()}
@@ -55,6 +58,7 @@ export function Author({data}:{data: Author[]}) {
             </div>
         </HoverCardContent>
         </HoverCard>
+        </Link>
         })}
         </div>
     </div>

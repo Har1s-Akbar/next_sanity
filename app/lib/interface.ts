@@ -57,3 +57,14 @@ export interface Author{
   };
   _createdAt: string;
 }
+
+export interface AuthorData{
+  name: string;
+  image: any;
+  bio:any;
+  slug:{
+    current:string
+  };
+  _createdAt: string;
+  posts : any;
+}
