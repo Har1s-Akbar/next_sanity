@@ -68,3 +68,9 @@ export interface AuthorData{
   _createdAt: string;
   posts : any;
 }
+
+export interface TopPicksType{
+  posts: any;
+  title: string;
+  description: string;
+}

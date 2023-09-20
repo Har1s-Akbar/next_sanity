@@ -22,7 +22,7 @@ function Nav() {
       <div className=' py-5 w-full'>
         <h1 className='text-xl font-semibold opacity-60 text-foreground w-1/4 subpixel-antialiased'>Text & Texture</h1>
       </div>
-      <div className='w-full justify-self-start'>
+      <div className='w-full justify-self-center'>
         <NavigationMenu>
           <NavigationMenuList>
               <NavigationMenuItem className='hover:bg-secondary transition duration-300 delay-300 ease-in-out py-2 px-3 rounded'>
@@ -33,13 +33,13 @@ function Nav() {
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem className='hover:bg-secondary transition duration-300 delay-300 ease-in-out py-2 px-3 rounded'>
-                <Link href="/home" legacyBehavior passHref>
+                <Link href="/top" legacyBehavior passHref>
                   <NavigationMenuLink>
                     Top Picks
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
-              <NavigationMenuItem >
+              {/* <NavigationMenuItem >
                 <NavigationMenuTrigger className='hover:bg-secondary bg-transparent mx-2 transition duration-300 delay-300 ease-in-out py-2 px-3 rounded'>
                   Blogs
                 </NavigationMenuTrigger>
@@ -74,7 +74,7 @@ function Nav() {
                       </li>
                     </ul>
                   </NavigationMenuContent>
-              </NavigationMenuItem>
+              </NavigationMenuItem> */}
               
               <NavigationMenuItem className='hover:bg-secondary transition duration-300 delay-300 ease-in-out py-2 px-3 rounded'>
                 <Link href="/home" legacyBehavior passHref>

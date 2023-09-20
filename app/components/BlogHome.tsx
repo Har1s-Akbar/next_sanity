@@ -11,7 +11,7 @@ function BlogHome({data, author}: any) {
           <h1 className="text-4xl mb-7">Blogs</h1>
           <BlogList data={data.data}/>
         </div>
-        <Separator className='w-0.5 mx-10 opacity-70 min-h-screen'/>
+        <Separator className='w-0.5 mx-10 opacity-70 min-h-screen my-5'/>
           <div className="w-4/12 flex flex-col items-center sticky top-0">
             <Premium/>
             <Tags/>

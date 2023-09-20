@@ -30,7 +30,7 @@ export function Author({data}:{data: Author[]}) {
                         <AvatarImage src={urlFor(item.image).width(300).height(300).url()} />
                         <AvatarFallback>{item.name}</AvatarFallback>
                     </Avatar>
-                    <p className="text-lg font-medium italic hover:border-0 font-medium underline decoration-red-300 decoration-wavy underline-offset-8 mx-2">{item.name}</p>
+                    <p className="text-lg font-medium italic font-medium underline decoration-red-300 decoration-wavy underline-offset-8 mx-2">{item.name}</p>
                 </div>
             </Button>
         </HoverCardTrigger>

@@ -48,8 +48,10 @@ export default async function SlugPage({
                   <AvatarFallback>{data.author.name}</AvatarFallback>
               </Avatar>
               <div className="mx-3">
-              <h1 className="text-2xl font-semibold tracking-wide">{data.author.name}</h1>
-              <p className="opacity-70 text-sm">Author</p>
+                <Link href={`/author/${data.author.slug.current}`}>
+                <h1 className="text-2xl font-semibold tracking-wide">{data.author.name}</h1>
+                <p className="opacity-70 text-xs">Author</p>
+                </Link>
               </div>
             </div>
           </div>

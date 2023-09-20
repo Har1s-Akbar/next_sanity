@@ -17,10 +17,8 @@ import { Post} from '../lib/interface'
 function BlogList({data}:{data : Post[]}) {
     return (
         <main className='flex items-center flex-col justify-center'>
-            {/* <h1 className='text-3xl font-semibold'>Blogs</h1> */}
             <div className='flex flex-col items-center'>
             {data.map((item)=>{
-            // return <h1>{item.slug.current}</h1>
             return <Card className='my-5 w-10/12'>
                   <Link href={`/post/${item.slug.current}`}>
               <div className='flex items-center w-full'>
