@@ -11,7 +11,7 @@ async function fetchToppicks(){
             categories[]->,
             author->
         }
-    }`
+    } | order(_updatedAt asc)`
     const data = await client.fetch(query)
 
     return data
