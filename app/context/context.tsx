@@ -3,6 +3,8 @@
 import React, { Dispatch, ReactNode, SetStateAction, createContext, useContext, useEffect, useState } from "react";
 import { Tag } from "../lib/interface";
 import { client } from "../lib/sanity";
+import { provider,auth } from "../lib/firebaseConfig";
+import { signInWithPopup } from "firebase/auth";
 
 interface Props {
     children: ReactNode;
@@ -10,24 +12,25 @@ interface Props {
 
 interface contextProps {
     tag : Tag[];
-    page: number;
     setTag : Dispatch<SetStateAction<Tag[]>>;
-    setPage: Dispatch<SetStateAction<number>>;
+    user: any
+    setUser: Dispatch<SetStateAction<any>>,
+    getUser():any
 }
 
 
 const GlobalContext = createContext<contextProps>({
     tag:[],
-    page:10,
+    user:[],
     setTag:(): Tag[]=>[],
-    setPage:()=>{},
+    setUser:()=>{},
+    getUser:()=> {}
 })
 
 
 export const GlobalContextProvider = ({children}: Props)=>{
     const [tag, setTag] = useState<[]|Tag[]>([])
-    const [page, setpage] =useState<10|number>(10)
-
+    const [user, setUser] = useState<[]|any>()
     async function getTag() {
         const query = `*[_type == "category"]`;
         const data = await client.fetch(query);
@@ -35,15 +38,18 @@ export const GlobalContextProvider = ({children}: Props)=>{
     }
     useEffect(()=> {getTag()},[])
 
-    const setPage = () =>{
-        setpage((prev)=> prev + 5)
+    const getUser = () =>{
+        signInWithPopup(auth,provider).then((result)=>{
+            const signedUser = result.user
+            setUser(signedUser)
+            // console.log(signedUser)
+        }).catch((error)=>{
+            console.log(error)
+        })
     }
-    // const decrementPage = () =>{
-    //     setPage((prev)=> prev - 5)
-    // }
 
     return(
-        <GlobalContext.Provider value={{tag, setTag, page, setPage}}>
+        <GlobalContext.Provider value={{tag, setTag, setUser, user, getUser}}>
             {children}
         </GlobalContext.Provider>    
     )

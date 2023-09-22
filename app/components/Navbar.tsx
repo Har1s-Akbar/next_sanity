@@ -88,7 +88,7 @@ function Nav() {
       </div>
       <div className='flex justify-between items-center w-7/12 m-auto'>
         <button className='bg-foreground py-2 px-3 hover:bg-secondary border-2 delay-200 duration-200 hover:text-foreground rounded-lg text-secondary'>
-          <Link href='/'>
+          <Link href='/signup'>
           Sign Up
           </Link>
         </button>
