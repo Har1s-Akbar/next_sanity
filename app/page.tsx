@@ -1,5 +1,4 @@
 import { client } from "./lib/sanity";
-import { Separator } from "@/components/ui/separator";
 
 export const revalidate = 60
 
