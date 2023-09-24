@@ -42,56 +42,29 @@ export default function Login() {
         }
     })
 
-  const onSubmit = (values: z.infer<typeof formSchema>) =>{
-    console.log(values)
-  }
-  
-  const handleSignUp = async () => {
+  const onSubmit = async(values: z.infer<typeof formSchema>) =>{
+    // console.log(values.email)
+    const email = values.email
+    const password = values.password
     await supabase.auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: `${location.origin}/auth/callback`,
       },
+    }).then((data)=>{
+      console.log(data)
+      // supabase.auth.onAuthStateChange((event, session)=>{
+      //   console.log(session)
+      // })
     })
     router.refresh()
   }
-
-
-//   const handleSignIn = async () => {
-//     await supabase.auth.signInWithOtp({
-//       email,
-//       options:{
-//         emailRedirectTo: `${location.origin}/`
-//       }
-//     })
-//     router.refresh()
-//   }
-
-//   const handleSignOut = async () => {
-//     await supabase.auth.signOut()
-//     router.refresh()
-//   }
 
   return (
     <main className='flex flex-col w-full justify-center items-center'>
         <h1 className='text-3xl font-semibold'>Sign Up</h1>
         <Separator className='w-1/3 my-7'/>
-        {/* <h1 className='text-3xl my-5 font-semibold'>Sign Up</h1>
-        <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="email">Email</Label>
-            <Input type="email" id="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} value={email}/>
-        </div>
-        <div className="grid w-full max-w-sm items-center gap-1.5 my-5">
-            <Label htmlFor="password">Password</Label>
-            <Input 
-            type="password"
-            name="password"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            />
-        </div>
-        <Button onClick={handleSignUp}>Sign up</Button> */}
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-1/3">
                 <FormField
@@ -113,12 +86,12 @@ export default function Login() {
                     <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                        <Input placeholder="password" {...field} />
+                        <Input type='password' placeholder="password" {...field} />
                     </FormControl>
                     </FormItem>
                 )}
                 />
-                <Button type="submit" className='w-full'>Submit</Button>
+                <Button type="submit" className='w-full'>Sign Up</Button>
             </form>
         </Form>
         <Link href='/sign' className='my-4 text-blue-300'>Already have an account?</Link>
