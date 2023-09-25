@@ -21,80 +21,83 @@ import { Separator } from '@/components/ui/separator'
 import Link from 'next/link'
 
 export default function Login() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const router = useRouter()
-  const supabase = createClientComponentClient()
+    const MAX_FILE_SIZE = 500000;
+    const ACCEPTED_IMAGE_TYPES = ["jpeg", "jpg", "png", "webp"];
 
+  const supabase = createClientComponentClient()
   const formSchema = z.object({
-    email: z.string().includes('@gmail.com',{
-        message:"invalid gmail"
+    name: z.string().max(15,{
+        message:"can not be of more tha 15 characters"
     }),
-    password: z.string().min(8,{
-        message:"password can not be shorter than 8 charcters"
-    })
+    username:z.string().toLowerCase().max(8,{
+        message: "username should be in small case and maximum of 8 characters"
+    }),
+    image: z
+    .any()
+    .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
+    .refine(
+      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+      "Only .jpg, .jpeg, .png and .webp formats are supported."
+    )
   })
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues:{
-            email:"",
-            password:""
+            name:"",
+            username:"",
+            image:"",
         }
     })
 
   const onSubmit = async(values: z.infer<typeof formSchema>) =>{
-    // console.log(values.email)
-    const email = values.email
-    const password = values.password
-    await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${location.origin}/auth/callback`,
-      },
-    }).then((data)=>{
-      console.log(data)
-      // supabase.auth.onAuthStateChange((event, session)=>{
-      //   console.log(session)
-      // })
-    })
-    router.refresh()
+    console.log(values)
   }
 
   return (
     <main className='flex flex-col w-full justify-center items-center'>
-        <h1 className='text-3xl font-semibold'>Sign Up</h1>
+        <h1 className='text-3xl font-semibold'>Help us set us Your Profile</h1>
         <Separator className='w-1/3 my-7'/>
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-1/3">
                 <FormField
                 control={form.control}
-                name="email"
+                name="name"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Name</FormLabel>
                     <FormControl>
-                        <Input placeholder="youremail@gmail.com" {...field} />
+                        <Input placeholder="John Doe" {...field} />
                     </FormControl>
                     </FormItem>
                 )}
                 />
                 <FormField
                 control={form.control}
-                name="password"
+                name="username"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>username</FormLabel>
                     <FormControl>
-                        <Input type='password' placeholder="password" {...field} />
+                        <Input type='text' placeholder="text" {...field} />
                     </FormControl>
-                    </FormItem>
+                </FormItem>
                 )}
                 />
-                <Button type="submit" className='w-full'>Sign Up</Button>
+                <FormField
+                control={form.control}
+                name="image"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Image</FormLabel>
+                    <FormControl>
+                        <Input type='file' id='picture' placeholder="text" {...field} />
+                    </FormControl>
+                </FormItem>
+                )}
+                />
+                <Button type="submit" className='w-full'>Confirm</Button>
             </form>
         </Form>
-        <Link href='/sign' className='my-4 text-blue-300'>Already have an account?</Link>
     </main>
   )
 }

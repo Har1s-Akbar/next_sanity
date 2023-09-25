@@ -86,15 +86,10 @@ function Nav() {
           </NavigationMenuList>
         </NavigationMenu>    
       </div>
-      <div className='flex justify-between items-center w-7/12 m-auto'>
-        <button className='bg-foreground py-2 px-3 hover:bg-secondary border-2 delay-200 duration-200 hover:text-foreground rounded-lg text-secondary'>
-          <Link href='/signup'>
-          Sign Up
-          </Link>
-        </button>
+      <div className='flex justify-between items-center w-1/3 m-auto'>
         <button className='text-foreground py-2 px-3 hover:bg-foreground border-2 delay-200 duration-200 hover:text-secondary rounded-lg bg-secondary'>
-          <Link href='/'>
-          Sign in
+          <Link href='/signin'>
+            Sign in
           </Link>
         </button>
         <Themebutton/>
