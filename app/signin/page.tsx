@@ -3,7 +3,7 @@ import React from 'react'
 import {Auth} from '@supabase/auth-ui-react'
 import {ThemeSupa, supabase} from '@supabase/auth-ui-shared'
 import clientSupabase from '../lib/supabaseConfig'
-import { redirect } from 'next/navigation'
+import { useGlobalContext } from '../context/context'
 import { useRouter } from 'next/navigation'
 
 const customTheme = {
@@ -32,11 +32,19 @@ const customTheme = {
 
 function page() {
     const router = useRouter()
-    
-    clientSupabase.auth.onAuthStateChange((event, session)=>{
-        // console.log(event, session)
-        if(event == 'SIGNED_IN'){
+    const {getProfile} = useGlobalContext()
+    clientSupabase.auth.onAuthStateChange(async(event, session)=>{
+      // console.log(event, session)
+      const id = session?.user.id
+      if(event == 'SIGNED_IN'){
+        const {error, data} = await clientSupabase.from('profiles').select().eq('id', id)
+        if(data[0].avatar_url !== null){
+            getProfile(id)
+            router.push(`/`)
+          }else{
             router.push(`/profile/${session?.access_token}`)
+          }
+          // console.log(data[0].avatar_url)
         }
         if(event == 'SIGNED_OUT'){
             console.log('signed out')

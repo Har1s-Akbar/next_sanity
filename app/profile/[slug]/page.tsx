@@ -19,11 +19,11 @@ import { Input } from "@/components/ui/input"
 import { useForm } from 'react-hook-form'
 import { Separator } from '@/components/ui/separator'
 import Link from 'next/link'
+import clientSupabase from '@/app/lib/supabaseConfig'
+import { v4 as uuidv4, v4 } from "uuid";
 
 export default function Login() {
-    const MAX_FILE_SIZE = 500000;
-    const ACCEPTED_IMAGE_TYPES = ["jpeg", "jpg", "png", "webp"];
-
+  const router = useRouter()
   const supabase = createClientComponentClient()
   const formSchema = z.object({
     name: z.string().max(15,{
@@ -32,13 +32,7 @@ export default function Login() {
     username:z.string().toLowerCase().max(8,{
         message: "username should be in small case and maximum of 8 characters"
     }),
-    image: z
-    .any()
-    .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
-    .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      "Only .jpg, .jpeg, .png and .webp formats are supported."
-    )
+    image: z.any()
   })
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -50,7 +44,25 @@ export default function Login() {
     })
 
   const onSubmit = async(values: z.infer<typeof formSchema>) =>{
-    console.log(values)
+    const filename = `${v4()}-${values.image}`
+    const {data, error} = await clientSupabase.auth.getSession()
+    const id = data.session?.user.id
+    if(data.session){
+      const updateAvatar = async() =>{
+        const {data} = await clientSupabase.storage.from('avatars').upload(values.image, values.image, {
+          cacheControl: "3600",
+          upsert: false,
+        });
+      updateData(data?.path)
+      }
+      const updateData = async(path: any) =>{
+        const {error, data} = await clientSupabase.from('profiles').update({full_name : values.name, username : values.username, avatar_url : path}).eq('id', id).select()
+        router.push('/')
+      }
+      updateAvatar()
+    }else{
+      console.log('no session found')
+    }
   }
 
   return (

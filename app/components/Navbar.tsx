@@ -14,9 +14,11 @@ import {
   } from "@/components/ui/navigation-menu"
 import Link from 'next/link'
 import Themebutton from './ThemeButton'
-
+import { useGlobalContext } from '../context/context'
 
 function Nav() {
+  const {profile, isAuth} = useGlobalContext()
+  console.log(profile)
   return (
     <main className='grid grid-cols-footer items-center justify-between w-11/12 m-auto mb-10'>
       <div className=' py-5 w-full'>
@@ -86,6 +88,9 @@ function Nav() {
           </NavigationMenuList>
         </NavigationMenu>    
       </div>
+      {isAuth ? <div>
+        <h1>Authenticated</h1>
+      </div>:
       <div className='flex justify-between items-center w-1/3 m-auto'>
         <button className='text-foreground py-2 px-3 hover:bg-foreground border-2 delay-200 duration-200 hover:text-secondary rounded-lg bg-secondary'>
           <Link href='/signin'>
@@ -93,7 +98,7 @@ function Nav() {
           </Link>
         </button>
         <Themebutton/>
-      </div>
+      </div>}
     </main>
   )
 }
