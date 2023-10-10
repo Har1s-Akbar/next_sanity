@@ -1,10 +1,9 @@
 'use client'
 
 import clientSupabase from "../lib/supabaseConfig";
-import React, { Dispatch, ReactNode, SetStateAction, createContext, useContext, useEffect, useState } from "react";
+import React, { Dispatch, ReactNode, SetStateAction, createContext, useContext, useMemo, useState } from "react";
 import { Tag } from "../lib/interface";
 import { client } from "../lib/sanity";
-import { Session } from "inspector";
 interface Props {
     children: ReactNode;
 }
@@ -40,15 +39,17 @@ export const GlobalContextProvider = ({children}: Props)=>{
         const data = await client.fetch(query);
         setTag(data)
     }
-    useEffect(()=> {getTag()},[])
+    useMemo(()=> {getTag()},[])
 
-    async function getProfile(id : string){
-        clientSupabase.auth.onAuthStateChange(async(event, Session)=>{
-            const {data, error} = await clientSupabase.from('profiles').select().eq('id', id)
-            setProfile(data)
+    async function getProfile(){
+        const {data, error} = await clientSupabase.auth.getSession()
+        if(data){
             setAuth(true)
-        })
+        }else{
+            setAuth(false)
+        }
     }
+    useMemo(()=>{getProfile()},[isAuth])
 
     return(
         <GlobalContext.Provider value={{tag, setTag, profile, setProfile,isAuth, setAuth, getProfile}}>
