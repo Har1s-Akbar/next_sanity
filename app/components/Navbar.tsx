@@ -29,6 +29,7 @@ import { useGlobalContext } from '../context/context'
 import clientSupabase from '../lib/supabaseConfig'
 import { ProfileInterface } from '../lib/interface'
 import { string } from 'zod'
+import { Separator } from '@/components/ui/separator'
 
 function Nav() {
   const {isAuth, setAuth} = useGlobalContext()
@@ -51,6 +52,14 @@ function Nav() {
     }else{
       setAuth(false)
     }
+  }
+  const SignOut = async()=>{
+    const {error} = await clientSupabase.auth.signOut()
+    clientSupabase.auth.onAuthStateChange(async(event, session)=>{
+      if(session === null){
+        setAuth(false)
+      }
+    })
   }
   const data = useMemo(()=> {getUser()},[])
   return (
@@ -85,28 +94,35 @@ function Nav() {
           </NavigationMenuList>
         </NavigationMenu>    
       </div>
-      <div className='flex w-7/12'>
+      <div className='flex w-7/12 items-center justify-center'>
         {isAuth ? 
         user.map((item : any)=>{
-          return <HoverCard>
+          return  <HoverCard>
           <HoverCardTrigger asChild>
-            <Button variant="link" className='rounded-full'>
+            <Button variant="link" className='drop-shadow-lg'>
               {pfp === null ? <span></span>: 
-              <Image src={pfp.publicUrl} className=' border-3 border-yellow-600' alt={item.full_name} width={50} height={50}/>}
+              <Image src={pfp.publicUrl} className='rounded-full border-3 mx-5 mr-20 border-yellow-600' alt={item.full_name} width={50} height={50}/>}
             </Button>
           </HoverCardTrigger>
-          <HoverCardContent className="w-80">
-            <div className="flex justify-between space-x-4">
-              <Avatar>
-                <AvatarImage src="https://github.com/vercel.png" />
-                <AvatarFallback>VC</AvatarFallback>
-              </Avatar>
-              <div className="space-y-1">
-                <h4 className="text-sm font-semibold">@nextjs</h4>
-                <p className="text-sm">
-                  The React Framework – created and maintained by @vercel.
-                </p>
+          <HoverCardContent className="w-44">
+            <div className="flex justify-between flex-col space-x-4">
+              <div className='flex justify-between items-center'>
+                <Avatar>
+                  <AvatarImage src={pfp.publicUrl} />
+                  <AvatarFallback>{item.full_name}</AvatarFallback>
+                </Avatar>
+                <div className="space-y-1">
+                  <div className='flex justify-between w-5/12 items-center'>
+                    <h4 className="text-sm font-semibold">{item.full_name}</h4>
+                    <span>-</span>
+                    <p className='text-sm opacity-60 italic'>@{item.username}</p>
+                  </div>
+                </div>
               </div>
+              <Separator className='my-2 w-full border-3 border-white mx-auto'/>
+              <Button onClick={SignOut}>
+                  Sign Out
+                </Button>
             </div>
           </HoverCardContent>
         </HoverCard>

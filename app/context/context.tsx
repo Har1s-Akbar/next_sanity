@@ -57,7 +57,6 @@ export const GlobalContextProvider = ({children}: Props)=>{
                 }
             })
             setAuth(true)
-            console.log(isAuth)
         }else{
             setAuth(false)
         }

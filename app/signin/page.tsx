@@ -46,15 +46,9 @@ function page() {
           }
         }
         if(event == 'SIGNED_OUT'){
-            console.log('signed out')
             setAuth(false)
         }
     })
-    const signOut = () =>{
-        clientSupabase.auth.signOut()
-        setAuth(false)
-    }
-
   return (
     <main className='w-1/2 mx-auto'>
       <h1 className='text-3xl font-semibold text-center'>Sign In</h1>
@@ -66,7 +60,6 @@ function page() {
       }}}
       providers={['google', 'facebook', 'twitter']}
       />
-      <button className='text-center' onClick={signOut}>sign out</button>
     </main>
   )
 }
