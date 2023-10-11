@@ -32,25 +32,24 @@ const customTheme = {
 
 function page() {
     const router = useRouter()
-    const {getProfile, setAuth} = useGlobalContext()
-    // clientSupabase.auth.onAuthStateChange(async(event, session)=>{
-    //   // console.log(event, session)
-    //   console.log(event)
-    //   const id = session?.user.id
-    //   if(event == 'SIGNED_IN'){
-    //     const {error, data} = await clientSupabase.from('profiles').select().eq('id', id)
-    //     console.log(data)
-    //     if(data[0].avatar_url !== null){
-    //         getProfile(id)
-    //         router.push(`/`)
-    //       }else{
-    //         router.push(`/profile/${session?.access_token}`)
-    //       }
-    //     }
-    //     if(event == 'SIGNED_OUT'){
-    //         console.log('signed out')
-    //     }
-    // })
+    const {setAuth} = useGlobalContext()
+    clientSupabase.auth.onAuthStateChange(async(event, session)=>{
+      const id = session?.user.id
+      if(session?.token_type === 'bearer'){
+        const {error, data} = await clientSupabase.from('profiles').select().eq('id', id)
+        if(data[0].avatar_url !== null){
+            router.push(`/`)
+            setAuth(true)
+          }else{
+            router.push(`/profile/${session?.access_token}`)
+            setAuth(true)
+          }
+        }
+        if(event == 'SIGNED_OUT'){
+            console.log('signed out')
+            setAuth(false)
+        }
+    })
     const signOut = () =>{
         clientSupabase.auth.signOut()
         setAuth(false)

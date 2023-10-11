@@ -25,6 +25,7 @@ import { v4 as uuidv4, v4 } from "uuid";
 export default function Login() {
   const router = useRouter()
   const supabase = createClientComponentClient()
+  const [file, setfile] = useState<File | []>([])
   const formSchema = z.object({
     name: z.string().max(15,{
         message:"can not be of more tha 15 characters"
@@ -49,11 +50,8 @@ export default function Login() {
     const id = data.session?.user.id
     if(data.session){
       const updateAvatar = async() =>{
-        const {data} = await clientSupabase.storage.from('avatars').upload(values.image, values.image, {
-          cacheControl: "3600",
-          upsert: false,
-        });
-      updateData(data?.path)
+        const {data, error} = await clientSupabase.storage.from('profiles').upload('public/'+ file.name, file as File)
+        updateData(data?.path)
       }
       const updateData = async(path: any) =>{
         const {error, data} = await clientSupabase.from('profiles').update({full_name : values.name, username : values.username, avatar_url : path}).eq('id', id).select()
@@ -102,7 +100,7 @@ export default function Login() {
                     <FormItem>
                     <FormLabel>Image</FormLabel>
                     <FormControl>
-                        <Input type='file' id='picture' placeholder="text" {...field} />
+                        <Input type='file' id='picture' onChange={(e)=>{setfile(e.target.files[0])}} />
                     </FormControl>
                 </FormItem>
                 )}

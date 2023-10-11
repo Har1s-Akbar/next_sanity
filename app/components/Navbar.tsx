@@ -1,5 +1,6 @@
 "use client"
 
+import Image from 'next/image'
 import React, { useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
@@ -26,16 +27,30 @@ import Link from 'next/link'
 import Themebutton from './ThemeButton'
 import { useGlobalContext } from '../context/context'
 import clientSupabase from '../lib/supabaseConfig'
+import { ProfileInterface } from '../lib/interface'
+import { string } from 'zod'
 
 function Nav() {
   const {isAuth, setAuth} = useGlobalContext()
-  const [user, setUser] = useState([])
+  const [user, setUser] = useState<any | []>([])
+  const [pfp, setpfp] = useState<any | null>(null)
   const getUser = async() =>{
-    clientSupabase.auth.onAuthStateChange(async(event, Session)=>{
-      const id = Session?.user.id
-      const {data, error} = await clientSupabase.from('profiles').select().eq('id', id)
-      // console.log(data)
-    })
+    const {data, error} = await clientSupabase.auth.getSession()
+    const Data = data
+    if(data.session){
+      const id = Data.session?.user.id
+      const ProfileData = (await clientSupabase.from('profiles').select().eq('id', id)).data
+      const fileName = ProfileData[0].avatar_url
+      const { data } = clientSupabase
+      .storage
+      .from('profiles')
+      .getPublicUrl(fileName)
+      setpfp(data)
+      setUser(ProfileData)
+      setAuth(true)
+    }else{
+      setAuth(false)
+    }
   }
   const data = useMemo(()=> {getUser()},[])
   return (
@@ -72,9 +87,13 @@ function Nav() {
       </div>
       <div className='flex w-7/12'>
         {isAuth ? 
-          <HoverCard>
+        user.map((item : any)=>{
+          return <HoverCard>
           <HoverCardTrigger asChild>
-            <Button variant="link">@nextjs</Button>
+            <Button variant="link" className='rounded-full'>
+              {pfp === null ? <span></span>: 
+              <Image src={pfp.publicUrl} className=' border-3 border-yellow-600' alt={item.full_name} width={50} height={50}/>}
+            </Button>
           </HoverCardTrigger>
           <HoverCardContent className="w-80">
             <div className="flex justify-between space-x-4">
@@ -90,7 +109,9 @@ function Nav() {
               </div>
             </div>
           </HoverCardContent>
-        </HoverCard>:
+        </HoverCard>
+        })
+        :
         <div className='flex justify-between items-center w-1/3 m-auto'>
           <button className='text-foreground py-2 px-3 hover:bg-foreground border-2 delay-200 duration-200 hover:text-secondary rounded-lg bg-secondary'>
             <Link href='/signin'>
