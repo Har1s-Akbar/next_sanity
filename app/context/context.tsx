@@ -35,14 +35,13 @@ export const GlobalContextProvider = ({children}: Props)=>{
     const [profile, setProfile] = useState<[] | any>([])
     const router = useRouter()
     
-    useMemo(()=> 
     async function getTag() {
         const query = `*[_type == "category"]`;
         const data = await client.fetch(query);
         setTag(data)
     }
-    ,[])
-
+    
+    useMemo(()=> {getTag()},[])
     useMemo(()=>    async function getProfile(){
         const {data, error} = await clientSupabase.auth.getSession()
         if(data.session){

@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { PortableTextComponent } from "@/app/components/RichText";
 import Link from "next/link";
+import PostFunctions from "@/app/components/PostFunctions";
 
 export const revalidate = 60
 
@@ -28,15 +29,14 @@ export default async function SlugPage({
   params: { slug: string };
 }) {
   const data = (await getData(params.slug)) as Post;
-
   return (
     <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
-      <div>
-        <div className="flex items-center ml-20 justify-center">
-          <div className="w-1/2 hover:ease-in-out hover:duration-300 hover:delay-150 hover:border-r-8 hover:border-b-8 hover:p-5 border-white rounded-lg">
+      <div className="relative">
+        <div className="flex items-center pl-20 justify-center">
+          <div className="w-2/5 border-white rounded-lg">
           <Image src={urlFor(data.mainImage).url()} alt={data.title} width={600} height={500} className="rounded-lg drop-shadow-2xl w-full"/>
           </div>
-          <div className="m-auto ml-20 w-1/2">
+          <div className="m-auto ml-21 w-1/2">
             <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
               {data.title}
             </h1>
@@ -65,6 +65,9 @@ export default async function SlugPage({
             />
         </div>
         </div>
+      <div className="bg-white rounded-lg drop-shadow-2xl w-1/2 mx-auto h-10 sticky inset-x-0 bottom-5 py-3">
+        <PostFunctions data={data}/>
+      </div>
       </div>
     </div>
   );

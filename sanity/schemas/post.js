@@ -43,6 +43,11 @@ export default defineType({
       validation: Rule=> Rule.required(),
     }),
     defineField({
+      name:'inSupabase',
+      title:'Supabase',
+      type:'boolean'
+    }),
+    defineField({
       name: 'categories',
       title: 'Categories',
       type: 'array',
@@ -59,7 +64,9 @@ export default defineType({
       type: 'blockContent',
     }),
   ],
-
+  initialValue:{
+    inSupabase:false
+  },
   preview: {
     select: {
       title: 'title',

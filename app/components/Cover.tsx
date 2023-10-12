@@ -22,7 +22,7 @@ function Cover({data}:{data: Post[]}) {
             <Link href={`/post/${data[0].slug.current}`}>
             <Image className='rounded-lg group-hover:brightness-75 ease-in-out delay-150 duration-150' src={urlFor(data[0].mainImage).width(2000).height(700).url()} alt={data[0].title} height={2000} width={2000}/>
             </Link>
-            <div className=' absolute inset-y-36 w-1/2 p-6 rounded-r-lg group-hover:opacity-90 ease-in-out delay-75 duration-75 opacity-75 bg-zinc-600'>
+            <div className=' absolute inset-y-36 p-6 rounded-r-lg group-hover:opacity-90 ease-in-out delay-75 duration-75 opacity-75 bg-zinc-600'>
               <div className='mb-3 flex items-center justify-between'>
                 <div className=' flex items-center'>
                   <Avatar>
