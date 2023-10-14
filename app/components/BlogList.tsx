@@ -14,6 +14,7 @@ import Image from 'next/image'
 import { Post} from '../lib/interface'
 
 
+
 function BlogList({data}:{data : Post[]}) {
     return (
         <main className='flex items-center flex-col justify-center'>

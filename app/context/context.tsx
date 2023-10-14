@@ -1,7 +1,7 @@
 'use client'
 
 import clientSupabase from "../lib/supabaseConfig";
-import React, { Dispatch, ReactNode, SetStateAction, createContext, useContext, useMemo, useState } from "react";
+import React, { Dispatch, ReactNode, SetStateAction, createContext, useContext, useEffect, useState } from "react";
 import { Tag } from "../lib/interface";
 import { client } from "../lib/sanity";
 import { useRouter } from "next/navigation";
@@ -41,14 +41,16 @@ export const GlobalContextProvider = ({children}: Props)=>{
         setTag(data)
     }
     
-    useMemo(()=> {getTag()},[])
-    useMemo(()=>    async function getProfile(){
+    useEffect(()=> {getTag()},[])
+    
+    async function checkProfile(){
         const {data, error} = await clientSupabase.auth.getSession()
         if(data.session){
             const Data = data
             clientSupabase.auth.onAuthStateChange(async(event, Session)=>{
                 const id = Data.session.user.id
                 const {data, error} = await clientSupabase.from('profiles').select().eq('id', id)
+                console.log(data)
                 if(data.avatar_url == null){
                     router.push(`/profile/${Session?.access_token}`)
                 }else{
@@ -59,7 +61,9 @@ export const GlobalContextProvider = ({children}: Props)=>{
         }else{
             setAuth(false)
         }
-    },[isAuth])
+    }
+
+    useEffect(()=>{checkProfile}, [isAuth])
 
     return(
         <GlobalContext.Provider value={{tag, setTag, profile, setProfile,isAuth, setAuth}}>

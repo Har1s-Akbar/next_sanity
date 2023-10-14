@@ -15,20 +15,14 @@ import {
 } from "@/components/ui/hover-card"
 import {
     NavigationMenu,
-    NavigationMenuContent,
-    NavigationMenuIndicator,
     NavigationMenuItem,
     NavigationMenuLink,
     NavigationMenuList,
-    NavigationMenuTrigger,
-    NavigationMenuViewport,
   } from "@/components/ui/navigation-menu"
 import Link from 'next/link'
 import Themebutton from './ThemeButton'
 import { useGlobalContext } from '../context/context'
 import clientSupabase from '../lib/supabaseConfig'
-import { ProfileInterface } from '../lib/interface'
-import { string } from 'zod'
 import { Separator } from '@/components/ui/separator'
 
 function Nav() {
@@ -40,7 +34,7 @@ function Nav() {
     const Data = data
     if(data.session){
       const id = Data.session?.user.id
-      const ProfileData = (await clientSupabase.from('profiles').select().eq('id', id)).data
+      const ProfileData : any = (await clientSupabase.from('profiles').select().eq('id', id)).data
       const fileName = ProfileData[0].avatar_url
       const { data } = clientSupabase
       .storage
@@ -97,7 +91,7 @@ function Nav() {
       <div className='flex w-7/12 items-center justify-center'>
         {isAuth ? 
         user.map((item : any)=>{
-          return  <HoverCard>
+          return  <HoverCard key={item.id}>
           <HoverCardTrigger asChild>
             <Button variant="link" className='drop-shadow-lg'>
               {pfp === null ? <span></span>: 

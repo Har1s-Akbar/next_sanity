@@ -34,7 +34,7 @@ export default async function SlugPage({
       <div className="relative">
         <div className="flex items-center pl-20 justify-center">
           <div className="w-2/5 border-white rounded-lg">
-          <Image src={urlFor(data.mainImage).url()} alt={data.title} width={600} height={500} className="rounded-lg drop-shadow-2xl w-full"/>
+          <Image src={urlFor(data.mainImage).url()} priority={true} alt={data.title} width={600} height={500} className="rounded-lg h-auto w-auto drop-shadow-2xl w-full"/>
           </div>
           <div className="m-auto ml-21 w-1/2">
             <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
