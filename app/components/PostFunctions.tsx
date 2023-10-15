@@ -4,19 +4,22 @@ import { useState } from "react"
 import Image from "next/image"
 import clientSupabase from "../lib/supabaseConfig"
 import { useMemo } from "react"
-import { json } from "stream/consumers"
+import { useRouter } from "next/navigation"
 
 function PostFunctions({data}:{data: any}) {
   const id = data._id
   const [likes, setLikes] = useState([])
+  const router = useRouter()
+  const {pathname} = useRouter()
 
   const AddSupabase = async()=>{
     const postsData = (await clientSupabase.from('posts').select().eq('post_id', id)).data
-    if(postsData[0].likes === null){
+    if(!!postsData){
+      setLikes([])
+    }else if(postsData[0].likes === null){
       setLikes([])
     }else{
       setLikes(postsData[0].likes)
-
     }
     // console.log(pos)
     if(data.inSupabase){
@@ -33,6 +36,7 @@ function PostFunctions({data}:{data: any}) {
           const {data , error} = await clientSupabase.from('posts').insert({post_id: id}).select()
           if(!!error){
             AddSupabase();
+            router.push(pathname)
           }else{
             console.log('added to database and in sanity')
           }
@@ -53,14 +57,20 @@ function PostFunctions({data}:{data: any}) {
       const session = (await clientSupabase.auth.getSession()).data
       const role = session.session?.user.role
       const idUser = session.session?.user.id
+      console.log('clicked')
       if(role === 'authenticated'){
-        const {data, error} = await clientSupabase.from('posts').update({likes: [idUser]}).eq('post_id', id).select()
-        if(data[0].likes === null){
-          setLikes([])
-        }else{
-          setLikes(data[0].likes)
-    
-        }
+        const Exists = (await clientSupabase.from('posts').select('likes').eq('post_id', id).contains('likes',[idUser])).data
+        console.log(Exists)
+        // const {data, error} = await clientSupabase.from('posts').update({likes: [idUser]}).eq('post_id', id).select()
+        // if(!!data){
+        //   setLikes([])
+        //   console.log('likes not')
+        // }else if(data[0].likes === null){
+        //   setLikes([])
+        //   console.log('added')
+        // }else{
+        //   setLikes(data[0].likes)
+        // }
       }else{
         console.log('not authenticated')
       }
@@ -72,7 +82,7 @@ function PostFunctions({data}:{data: any}) {
     onClick={addLike}
     className="flex items-start justify-center">
       <h1 className="text-slate-800 mx-2">{likes.length}</h1>
-      <Image src="https://img.icons8.com/fluency-systems-regular/48/facebook-like--v1.png" alt="facebook-like--v1" width={21} height={21}/>
+      <Image src="https://img.icons8.com/ios/50/1A1A1A/facebook-like--v1.png" alt="facebook-like--v1" width={21} height={21}/>
     </button>
     <div className="flex items-start justify-center">
       <h1 className="text-slate-800 mx-2">0</h1>

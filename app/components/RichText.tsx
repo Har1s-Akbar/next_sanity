@@ -7,7 +7,7 @@ export const PortableTextComponent = {
     image: ({ value }:any ) => (
       <div className="my-5 flex items-center flex-col justify-center">
         <Image
-        sizes="75vw"
+        sizes="50vw"
           src={urlFor(value).width(1000).height(500).url()}
           alt={'photo'}
           className="rounded-lg m-auto my-2 drop-shadow-2xl"

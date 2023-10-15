@@ -9,7 +9,7 @@ import { PortableTextComponent } from "@/app/components/RichText";
 import Link from "next/link";
 import PostFunctions from "@/app/components/PostFunctions";
 
-export const revalidate = 60
+export const revalidate = 10
 
 async function getData(slug: string) {
   const query = `*[_type == "post" && slug.current == "${slug}"][0]{
