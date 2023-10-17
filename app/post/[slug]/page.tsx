@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { PortableTextComponent } from "@/app/components/RichText";
 import Link from "next/link";
 import PostFunctions from "@/app/components/PostFunctions";
+import CommentsForm from '@/app/components/CommentsForm'
 
 export const revalidate = 10
 
@@ -63,6 +64,9 @@ export default async function SlugPage({
               value={data.body}
               components={PortableTextComponent}
             />
+        </div>
+        <div className="my-5">
+          <CommentsForm/>
         </div>
         </div>
       <div className="bg-white rounded-lg drop-shadow-2xl w-1/2 mx-auto h-10 sticky inset-x-0 bottom-5 py-3">
