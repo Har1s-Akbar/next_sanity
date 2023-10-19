@@ -10,7 +10,7 @@ import Link from "next/link";
 import PostFunctions from "@/app/components/PostFunctions";
 import CommentsForm from '@/app/components/CommentsForm'
 
-export const revalidate = 10
+export const revalidate = 60
 
 async function getData(slug: string) {
   const query = `*[_type == "post" && slug.current == "${slug}"][0]{
@@ -66,7 +66,7 @@ export default async function SlugPage({
             />
         </div>
         <div className="my-5">
-          <CommentsForm/>
+          <CommentsForm data={data}/>
         </div>
         </div>
       <div className="bg-white rounded-lg drop-shadow-2xl w-1/2 mx-auto h-10 sticky inset-x-0 bottom-5 py-3">

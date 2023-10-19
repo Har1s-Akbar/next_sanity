@@ -2,20 +2,15 @@ import { client } from "@/app/lib/sanity";
 import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 
-// export const config = {
-//     api: {
-//       bodyParser: true,
-//     },
-//   }
-
 export async function POST(req: NextApiRequest) {
     
     try{
         const res = await req.json()
         const id = res.id
-        client.patch(id).set({inSupabase: true}).commit()
+        const crude = client.patch(id).set({inSupabase: true}).commit()
+        const data = await crude.then((result)=> {return result})
         return NextResponse.json(
-            {message: 'Added to Supabase'},
+            {message: data},
             {status : 200}
             )
     }catch(err){
