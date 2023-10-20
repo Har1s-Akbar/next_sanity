@@ -20,9 +20,7 @@ export default function CommentsForm({data}:{data: any}) {
     const userId = isAuthenticated.session.user.id
     // console.log(isAuthenticated)
     if(!!isAuthenticated){
-      console.log(postId)
-      const {data, error} = await clientSupabase.from('comments').insert({post_id: postId, profile_id:userId, comments:[{comment}]})
-      console.log(data)
+      const {data, error} = await clientSupabase.from('comments').update({comments:[{'comment': comment, 'user': userId}]}).eq('post_id', postId)
     }else{
       console.log('is not auth')
     }

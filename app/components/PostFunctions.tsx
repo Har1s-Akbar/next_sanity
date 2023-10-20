@@ -12,59 +12,31 @@ function PostFunctions({data}:{data: any}) {
   const router = useRouter()
   // console.log(likes.length)
   const AddSupabase = async()=>{
-    const sanityTrueChange = await fetch(process.env.NEXT_PUBLIC_URL + '/api/supabase',{
-      method: 'POST',
-      body: JSON.stringify({id}),
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-    const data = await sanityTrueChange.json()
-    console.log(data.message)
-
-    // const postsData = (await clientSupabase.from('posts').select().eq('post_id', id)).data
-    // // console.log(postsData)
-    // if(postsData.length >= 1){
-    //   // console.log('it is rendering 1')
-    //   setLikes(postsData[0].likes)
-    // }else if(!postsData){
-    //   // console.log('it is rendering 2')
-    //   setLikes([])
-    // }else{
-    //   // console.log('it is rendering 3')
-    //   setLikes([])
-    // }
-    // if(data.inSupabase){
-    //   console.log('already added')
-    // }else{
-    //   const sanityTrueChange = await fetch(process.env.NEXT_PUBLIC_URL + '/api/supabase',{
-    //     method: 'POST',
-    //     body: JSON.stringify({id}),
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     }
-    //   }).then(async(result) => {
-    //     if(result.status === 200){
-    //       const userData = (await clientSupabase.auth.getSession()).data
-    //       const userId = userData.session.user.id
-    //       const {data , error} = await clientSupabase.from('posts').insert({post_id: id}).select()
-    //       await clientSupabase.from('comments').insert({post_id: id})
-    //       if(!!error){
-    //         AddSupabase();
-    //       }else{
-    //         console.log('added to database and in sanity')
-    //       }
-    //       }
-    //      }).catch((error)=>{
-    //       if(error){
-    //         console.log('error occuered')
-    //       }else{
-    //         console.log('no error occuered')
-    //       }
-    //      })
-    //   }
+    if(data.inSupabase){
+    }else{
+      const sanityTrueChange = await fetch(process.env.NEXT_PUBLIC_URL + '/api/supabase',{
+            method: 'POST',
+            body: JSON.stringify({id}),
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          }).then(async(result) => {
+            const existPost = (await clientSupabase.from('posts').select().eq('post_id', id)).data
+            const existComment = (await clientSupabase.from('comments').select().eq('post_id', id)).data
+            // console.log(!!existPost.length && !!existComment.length)
+            if(!!existComment.length && !!existPost.length){
+              if(!!existPost.likes){
+                setLikes(existPost.likes)
+              }else{
+                setLikes([])
+              }
+            }else{
+              const postAdded = (await clientSupabase.from('posts').insert({post_id: id}).select()).data
+              const commentAdded = (await clientSupabase.from('comments').insert({post_id: id}).select()).data
+            }
+          })
+        }
     }
-
     useMemo(()=>{AddSupabase()}, [])
 
     const addLike = async() =>{
