@@ -13,6 +13,8 @@ function PostFunctions({data}:{data: any}) {
   // console.log(likes.length)
   const AddSupabase = async()=>{
     if(data.inSupabase){
+      const likesData = (await clientSupabase.from('posts').select().eq('post_id',id)).data
+      console.log(likesData)
     }else{
       const sanityTrueChange = await fetch(process.env.NEXT_PUBLIC_URL + '/api/supabase',{
             method: 'POST',
@@ -38,7 +40,6 @@ function PostFunctions({data}:{data: any}) {
         }
     }
     useMemo(()=>{AddSupabase()}, [])
-
     const addLike = async() =>{
       const session = (await clientSupabase.auth.getSession()).data
       const role = session.session?.user.role

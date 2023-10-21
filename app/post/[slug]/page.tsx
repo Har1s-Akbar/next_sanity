@@ -65,7 +65,7 @@ export default async function SlugPage({
               components={PortableTextComponent}
             />
         </div>
-        <div className="my-5">
+        <div className="my-5 mb-16">
           <CommentsForm data={data}/>
         </div>
         </div>

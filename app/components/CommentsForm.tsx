@@ -1,6 +1,7 @@
 'use client'
 import { useState, useMemo, useId } from "react"
 import { Button } from "@/components/ui/button"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import {
   Tabs,
   TabsContent,
@@ -15,8 +16,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import {
   Alert,
   AlertDescription,
@@ -28,6 +27,7 @@ import clientSupabase from "../lib/supabaseConfig"
 export default function CommentsForm({data}:{data: any}) {
   const [comment, setComment] = useState(null);
   const [commentData, setCommentData] = useState([])
+  const [render, setRender] = useState(false)
   const postId = data._id
 
   const getCommentData = async() =>{
@@ -35,6 +35,7 @@ export default function CommentsForm({data}:{data: any}) {
     // console.log(data[0].comments)
     if(!!data[0].comments){
       setCommentData(data[0].comments)
+      setRender(true)
     }else{
       return commentData
     }
@@ -49,9 +50,10 @@ export default function CommentsForm({data}:{data: any}) {
       // console.log(userId)
       const userProfile = (await clientSupabase.from('profiles').select().eq('id', userId)).data
       const name = userProfile[0].full_name
-      console.log(!name)
+      // console.log(!name)
       if(!!name){
-        const {data, error} = await clientSupabase.from('comments').insert({comments:[{'comment': comment, 'name': name}]}).eq('post_id', postId).select()
+        const {data, error} = await clientSupabase.rpc('append_comments', {post_id_input : postId, jsonb_data: {name: name, comment: comment}})
+        setRender(true)
         setCommentData(data[0].comments)
       }else{
         console.log('can not add comment')
@@ -103,16 +105,26 @@ export default function CommentsForm({data}:{data: any}) {
                 Comments Posted by users
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-2">
-              {commentData.map((item)=>{
-              return <Alert className="bg-zinc-900">
-                <AlertTitle className="text-lg underline">{item.name}</AlertTitle>
-                <AlertDescription>
-                  {item.comment}
-                </AlertDescription>
-              </Alert>
-              })}
-            </CardContent>
+            <ScrollArea className="h-72 w-full rounded-md border">
+                <CardContent className="space-y-2 my-5">
+                  {render?
+                  <div>
+                  {commentData.map((item)=>{
+                    return <Alert className="bg-zinc-900 my-2">
+                    <AlertTitle className="text-lg underline">{item.name}</AlertTitle>
+                    <AlertDescription>
+                      {item.comment}
+                    </AlertDescription>
+                  </Alert>
+                  })}                  
+                  </div>
+                  :
+                  <div>
+                    <h1 className="text-zinc-400 text-center">Be the first to add a comment</h1>
+                  </div>
+                  }
+                </CardContent>
+              </ScrollArea>
           </Card>
         </TabsContent>
       </Tabs>
