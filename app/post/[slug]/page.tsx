@@ -9,27 +9,31 @@ import { PortableTextComponent } from "@/app/components/RichText";
 import Link from "next/link";
 import PostFunctions from "@/app/components/PostFunctions";
 import CommentsForm from '@/app/components/CommentsForm'
+import clientSupabase from "@/app/lib/supabaseConfig";
 
 export const revalidate = 60
 
-async function getData(slug: string) {
-  const query = `*[_type == "post" && slug.current == "${slug}"][0]{
-    ...,
-    categories[]->,
-    author->
-  }`;
+  async function getData(slug: string) {
+    const query = `*[_type == "post" && slug.current == "${slug}"][0]{
+      ...,
+      categories[]->,
+      author->
+    }`;
 
-  const data = await client.fetch(query);
+    const data = await client.fetch(query);
 
-  return data;
-}
+    return data;
+  }
 
 export default async function SlugPage({
   params,
 }: {
   params: { slug: string };
 }) {
+
+
   const data = (await getData(params.slug)) as Post;
+  
   return (
     <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
       <div className="relative">

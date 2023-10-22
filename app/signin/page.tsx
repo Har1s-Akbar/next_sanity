@@ -49,6 +49,12 @@ function page() {
             setAuth(false)
         }
     })
+
+    const logout = async()=>{
+      const { error } = await clientSupabase.auth.signOut()
+      console.log(error)
+    }
+
   return (
     <main className='w-1/2 mx-auto'>
       <h1 className='text-3xl font-semibold text-center'>Sign In</h1>
@@ -60,6 +66,9 @@ function page() {
       }}}
       providers={['google', 'facebook', 'twitter']}
       />
+      <button className='' onClick={logout}>
+        sign out
+      </button>
     </main>
   )
 }

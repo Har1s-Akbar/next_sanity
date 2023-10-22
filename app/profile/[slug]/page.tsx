@@ -29,9 +29,13 @@ export default function Login() {
   const formSchema = z.object({
     name: z.string().max(15,{
         message:"can not be of more tha 15 characters"
+    }).min(4,{
+      message:'should be of more than 4 letters'
     }),
     username:z.string().toLowerCase().max(8,{
         message: "username should be in small case and maximum of 8 characters"
+    }).min(3,{
+      message:'should be of more than 3 letters'
     }),
     image: z.any()
   })
@@ -45,21 +49,26 @@ export default function Login() {
     })
 
   const onSubmit = async(values: z.infer<typeof formSchema>) =>{
-    const filename = `${v4()}-${values.image}`
-    const {data, error} = await clientSupabase.auth.getSession()
-    const id = data.session?.user.id
-    if(data.session){
-      const updateAvatar = async() =>{
-        const {data, error} = await clientSupabase.storage.from('profiles').upload('public/'+ file.name, file as File)
-        updateData(data?.path)
+    // console.log(!file)
+    if(!!file){
+      const filename = `${v4()}-${values.image}`
+      const {data, error} = await clientSupabase.auth.getSession()
+      const id = data.session?.user.id
+      if(data.session){
+        const updateAvatar = async() =>{
+          const {data, error} = await clientSupabase.storage.from('profiles').upload('public/'+ file.name, file as File)
+          updateData(data?.path)
+        }
+        const updateData = async(path: any) =>{
+          const {error, data} = await clientSupabase.from('profiles').update({full_name : values.name, username : values.username, avatar_url : path}).eq('id', id).select()
+          router.push('/')
+        }
+        updateAvatar()
+      }else{
+        console.log('no session found')
       }
-      const updateData = async(path: any) =>{
-        const {error, data} = await clientSupabase.from('profiles').update({full_name : values.name, username : values.username, avatar_url : path}).eq('id', id).select()
-        router.push('/')
-      }
-      updateAvatar()
     }else{
-      console.log('no session found')
+      alert('Image is empty!!!')
     }
   }
 

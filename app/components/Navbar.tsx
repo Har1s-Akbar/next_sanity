@@ -24,25 +24,35 @@ import Themebutton from './ThemeButton'
 import { useGlobalContext } from '../context/context'
 import clientSupabase from '../lib/supabaseConfig'
 import { Separator } from '@/components/ui/separator'
+import { useRouter } from "next/navigation"
 
 function Nav() {
+  const router = useRouter()
   const {isAuth, setAuth} = useGlobalContext()
   const [user, setUser] = useState<any | []>([])
   const [pfp, setpfp] = useState<any | null>(null)
   const getUser = async() =>{
     const {data, error} = await clientSupabase.auth.getSession()
     const Data = data
+    console.log(error)
     if(data.session){
       const id = Data.session?.user.id
       const ProfileData : any = (await clientSupabase.from('profiles').select().eq('id', id)).data
-      const fileName = ProfileData[0].avatar_url
-      const { data } = clientSupabase
-      .storage
-      .from('profiles')
-      .getPublicUrl(fileName)
-      setpfp(data)
-      setUser(ProfileData)
-      setAuth(true)
+      if(!!ProfileData[0].avatar_url){
+        const fileName = ProfileData[0].avatar_url
+        const { data } = clientSupabase
+        .storage
+        .from('profiles')
+        .getPublicUrl(fileName)
+        setpfp(data)
+        setUser(ProfileData)
+        setAuth(true)
+      }else if(ProfileData.length <= 0){
+        console.log('not authenticated')
+      }
+      else{
+        router.push(`/profile/${Data.session.access_token}`)
+      }
     }else{
       setAuth(false)
     }
@@ -55,7 +65,7 @@ function Nav() {
       }
     })
   }
-  const data = useMemo(()=> {getUser()},[])
+  const data = useMemo(()=> {getUser()},[isAuth])
   return (
     <main className='grid grid-cols-footer items-center justify-between w-11/12 m-auto mb-10'>
       <div className=' py-5 w-full'>
