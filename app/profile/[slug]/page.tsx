@@ -24,6 +24,7 @@ import { v4 as uuidv4, v4 } from "uuid";
 
 export default function Login() {
   const router = useRouter()
+  const [loading, setLoading] = useState(false)
   const supabase = createClientComponentClient()
   const [file, setfile] = useState<File | []>([])
   const formSchema = z.object({
@@ -49,11 +50,12 @@ export default function Login() {
     })
 
   const onSubmit = async(values: z.infer<typeof formSchema>) =>{
-    // console.log(!file)
+    // console.log(!!file)
     if(!!file){
-      const filename = `${v4()}-${values.image}`
+      setLoading(true)
       const {data, error} = await clientSupabase.auth.getSession()
       const id = data.session?.user.id
+      console.log(data)
       if(data.session){
         const updateAvatar = async() =>{
           const {data, error} = await clientSupabase.storage.from('profiles').upload('public/'+ file.name, file as File)
@@ -61,7 +63,12 @@ export default function Login() {
         }
         const updateData = async(path: any) =>{
           const {error, data} = await clientSupabase.from('profiles').update({full_name : values.name, username : values.username, avatar_url : path}).eq('id', id).select()
-          router.push('/')
+          if(!!data){
+            router.push('/')
+          }else{
+          setLoading(true)  
+          }
+          setLoading(false)
         }
         updateAvatar()
       }else{
@@ -114,7 +121,11 @@ export default function Login() {
                 </FormItem>
                 )}
                 />
+                {loading ? 
+                <Button type="submit" className='w-full opacity-90'>Updating....</Button>
+                :
                 <Button type="submit" className='w-full'>Confirm</Button>
+              }
             </form>
         </Form>
     </main>

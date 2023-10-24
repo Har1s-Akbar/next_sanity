@@ -74,3 +74,14 @@ export interface TopPicksType{
   title: string;
   description: string;
 }
+
+export interface profileArray{
+  
+}
+
+export interface ProfileInterface {
+  id: string;
+  avatar_url:string;
+  username:string;
+  full_name:string;
+}

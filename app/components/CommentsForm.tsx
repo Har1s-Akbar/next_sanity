@@ -26,25 +26,22 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import clientSupabase from "../lib/supabaseConfig"
 import Link from "next/link"
+import { useGlobalContext } from "../context/context"
 
-export default function CommentsForm({data, session}: any) {
+export default function CommentsForm({data}: any) {
+  const {profile, isAuth, session} = useGlobalContext()
   const [comment, setComment] = useState(null);
   const [commentData, setCommentData] = useState([])
-  const [auth, setAuth] = useState(false)
   const [render, setRender] = useState(false)
   const postId = data._id
-
-  const changeAuth = () =>{
-    if(!!session.session){
-      setAuth(true)
-    }else{
-      setAuth(false)
-    }
-  }
+  const id = data._id
 
   const getCommentData = async() =>{
     const {data, error} = await clientSupabase.from('comments').select('comments').eq('post_id', postId)
-    if(!!data[0].comments){
+    console.log(!!data.length)
+    if(!data.length){
+      setCommentData([])
+    }else if(!!data[0].comments){
       setCommentData(data[0].comments)
       setRender(true)
     }else{
@@ -53,13 +50,12 @@ export default function CommentsForm({data, session}: any) {
   }
 
   useMemo(()=> getCommentData(), [])
-
+// console.log(session)
   const addComment = async() =>{
-    const isAuthenticated = (await clientSupabase.auth.getSession()).data
-    const userId = isAuthenticated.session.user.id
-    if(!!isAuthenticated){
-      const userProfile = (await clientSupabase.from('profiles').select().eq('id', userId)).data
-      const name = userProfile[0].full_name
+    // const isAuthenticated = (await clientSupabase.auth.getSession()).data
+    const userId = session.user.id
+    if(!!session){
+      const name = profile[0].full_name
       if(!!name){
         const {data, error} = await clientSupabase.rpc('append_comments', {post_id_input : postId, jsonb_data: {name: name, comment: comment}})
         setRender(true)
@@ -79,7 +75,7 @@ export default function CommentsForm({data, session}: any) {
           <TabsTrigger value="comments">Comments</TabsTrigger>
         </TabsList>
         <TabsContent value="add">
-              {auth ?
+              {isAuth ?
                 <Card>
                   <CardHeader>
                     <CardTitle>Add Comments</CardTitle>

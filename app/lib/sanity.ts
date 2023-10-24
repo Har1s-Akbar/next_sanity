@@ -11,6 +11,6 @@ export const client = createClient({
   apiVersion,
   useCdn: false,
   token,
-  ignoreBrowserTokenWarning: true,
+  ignoreBrowserTokenWarning: true,  
 });
 

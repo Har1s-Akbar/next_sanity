@@ -12,32 +12,17 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { Button } from "@/components/ui/button"
+import { useGlobalContext } from "../context/context"
 
 function PostFunctions({data}: any) {
-  const [auth, setAuth] = useState(false)
-  const [user, setUser] = useState([])
+  const {isAuth, profile} = useGlobalContext()
   const id = data._id
-  // const getsess= async()=>{
-  //   const {data, error} = await clientSupabase.auth.getSession()
-  //   console.log(data,error)
-  // }
-  // getsess()
   const [likes, setLikes] = useState([])
   const router = useRouter()
-  const getUser = async() =>{
-  //   if(!!session.session){
-  //     setAuth(true)
-  //     setUser(session)
-  //   }else{
-  //     setAuth(false)
-  //   }
-  // }
-  // useMemo(()=>{getUser()},[])
   
   const AddSupabase = async()=>{
     if(data.inSupabase){
       const likesData = (await clientSupabase.from('posts').select().eq('post_id',id)).data
-      // console.log(likesData[0].likes)
       setLikes(likesData[0].likes)
     }else{
       const sanityTrueChange = await fetch(process.env.NEXT_PUBLIC_URL + '/api/supabase',{
@@ -65,40 +50,33 @@ function PostFunctions({data}: any) {
     }
     useMemo(()=>{AddSupabase()}, [])
     const addLike = async() =>{
-      const session = (await clientSupabase.auth.getSession()).data
-      const role = session.session?.user.role
-      const idUser = session.session?.user.id
-      if(role === 'authenticated'){
-        setAuth(true)
-        const Exists = (await clientSupabase.from('posts').select('likes').eq('post_id', id).contains('likes',[idUser])).data
-        if(Exists.length === 0){
-          const {data, error} = await clientSupabase.from('posts').update({likes: [idUser]}).eq('post_id', id).select()
-          if(!!data){
-            setLikes(data[0].likes)
-          }else if(data[0].likes === null){
-            setLikes([])
-          }else{
-            setLikes([])
-          }
+    console.log(profile)
+    const Id = profile[0].id
+    const Exists = (await clientSupabase.from('posts').select('likes').eq('post_id', id).contains('likes',[Id])).data
+    if(Exists.length === 0){
+        const {data, error} = await clientSupabase.from('posts').update({likes: [Id]}).eq('post_id', id).select()
+        if(!!data){
+          setLikes(data[0].likes)
+        }else if(data[0].likes === null){
+          setLikes([])
         }else{
-          const {data, error} = await clientSupabase.rpc('remove_user_likes',{post_id_input: id, user_id: idUser} )
-          if(!!data){
-            setLikes(data[0].likes)
-          }else if(data[0].likes === null){
-            setLikes([])
-          }else{
-            setLikes([])
-          }
+          setLikes([])
         }
       }else{
-        setAuth(false)
-        console.log('not authenticated')
+        const {data, error} = await clientSupabase.rpc('remove_user_likes',{post_id_input: id, user_id: Id} )
+        if(!!data){
+          setLikes(data[0].likes)
+        }else if(data[0].likes === null){
+            setLikes([])
+        }else{
+          setLikes([])
+        }
       }
     }
 
   return (
   <div className="flex items-center justify-between w-1/2 mx-auto">
-    {auth ?
+    {isAuth ?
     <button
     onClick={addLike}
     className="flex items-start justify-center">

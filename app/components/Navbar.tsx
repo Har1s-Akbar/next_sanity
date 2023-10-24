@@ -28,44 +28,8 @@ import { useRouter } from "next/navigation"
 
 function Nav() {
   const router = useRouter()
-  const {isAuth, setAuth} = useGlobalContext()
-  const [user, setUser] = useState<any | []>([])
-  const [pfp, setpfp] = useState<any | null>(null)
-  const getUser = async() =>{
-    const {data, error} = await clientSupabase.auth.getSession()
-    const Data = data
-    console.log(error)
-    if(data.session){
-      const id = Data.session?.user.id
-      const ProfileData : any = (await clientSupabase.from('profiles').select().eq('id', id)).data
-      if(!!ProfileData[0].avatar_url){
-        const fileName = ProfileData[0].avatar_url
-        const { data } = clientSupabase
-        .storage
-        .from('profiles')
-        .getPublicUrl(fileName)
-        setpfp(data)
-        setUser(ProfileData)
-        setAuth(true)
-      }else if(ProfileData.length <= 0){
-        console.log('not authenticated')
-      }
-      else{
-        router.push(`/profile/${Data.session.access_token}`)
-      }
-    }else{
-      setAuth(false)
-    }
-  }
-  const SignOut = async()=>{
-    const {error} = await clientSupabase.auth.signOut()
-    clientSupabase.auth.onAuthStateChange(async(event, session)=>{
-      if(session === null){
-        setAuth(false)
-      }
-    })
-  }
-  const data = useMemo(()=> {getUser()},[isAuth])
+  const {profile, profilePath, isAuth, signOut} = useGlobalContext()
+
   return (
     <main className='grid grid-cols-footer items-center justify-between w-11/12 m-auto mb-10'>
       <div className=' py-5 w-full'>
@@ -100,19 +64,19 @@ function Nav() {
       </div>
       <div className='flex w-7/12 items-center justify-center'>
         {isAuth ? 
-        user.map((item : any)=>{
+        profile.map((item : any)=>{
           return  <HoverCard key={item.id}>
           <HoverCardTrigger asChild>
             <Button variant="link" className='drop-shadow-lg'>
-              {pfp === null ? <span></span>: 
-              <Image src={pfp.publicUrl} className='rounded-full border-3 mx-5 mr-20 border-yellow-600' alt={item.full_name} width={50} height={50}/>}
+              {profilePath === null ? <span></span>: 
+              <Image src={profilePath.publicUrl} className='rounded-full border-3 mx-5 mr-20 border-yellow-600' alt={item.full_name} width={50} height={50}/>}
             </Button>
           </HoverCardTrigger>
           <HoverCardContent className="w-44">
             <div className="flex justify-between flex-col space-x-4">
               <div className='flex justify-between items-center'>
                 <Avatar>
-                  <AvatarImage src={pfp.publicUrl} />
+                  <AvatarImage src={profilePath.publicUrl} />
                   <AvatarFallback>{item.full_name}</AvatarFallback>
                 </Avatar>
                 <div className="space-y-1">
@@ -124,9 +88,9 @@ function Nav() {
                 </div>
               </div>
               <Separator className='my-2 w-full border-3 border-white mx-auto'/>
-              <Button onClick={SignOut}>
+              <Button onClick={signOut}>
                   Sign Out
-                </Button>
+              </Button>
             </div>
           </HoverCardContent>
         </HoverCard>
