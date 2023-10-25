@@ -21,10 +21,12 @@ import { Separator } from '@/components/ui/separator'
 import Link from 'next/link'
 import clientSupabase from '@/app/lib/supabaseConfig'
 import { v4 as uuidv4, v4 } from "uuid";
+import { useGlobalContext } from '@/app/context/context'
 
 
 
 export default function Login() {
+  const {getsession} = useGlobalContext();
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const supabase = createClientComponentClient()
@@ -66,6 +68,7 @@ export default function Login() {
         const updateData = async(path: any) =>{
           const {error, data} = await clientSupabase.from('profiles').update({full_name : values.name, username : values.username, avatar_url : path}).eq('id', id).select()
           if(!!data){
+            getsession()
             router.push('/')
           }else{
           setLoading(true)  

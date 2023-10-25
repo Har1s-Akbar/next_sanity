@@ -70,7 +70,9 @@ export const GlobalContextProvider = ({children}: Props)=>{
                     .from('profiles')
                     .getPublicUrl(profilePicture)
                     setProfilePath(data)
+                    console.log(profile)
                     setAuth(true)
+                    // router.push('/')
                 }else{
                     setAuth(false)
                     console.log('this is running session')
