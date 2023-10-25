@@ -2,9 +2,10 @@
 
 import clientSupabase from "../lib/supabaseConfig";
 import React, { Dispatch, ReactNode, SetStateAction, createContext, useContext, useEffect, useState } from "react";
-import { Tag } from "../lib/interface";
+import { ProfileType, Tag, profileArray, sessionType, userType, profilepathType } from "../lib/interface";
 import { client } from "../lib/sanity";
 import { useRouter } from "next/navigation";
+
 
 interface Props {
     children: ReactNode;
@@ -12,13 +13,14 @@ interface Props {
 
 interface contextProps {
     tag : Tag[];
-    profilePath:{},
+    profilePath: profilepathType,
     setTag : Dispatch<SetStateAction<Tag[]>>;
     isAuth: boolean;
+    getsession: ()=>void;
     setAuth: Dispatch<SetStateAction<boolean>>;
-    profile: [];
-    setProfile: Dispatch<SetStateAction<[]>>;
-    setSession: Dispatch<SetStateAction<string>>;
+    profile: profileArray[];
+    setProfile: Dispatch<SetStateAction<ProfileType[]>>;
+    setSession: Dispatch<SetStateAction<sessionType[]>>;
     session:{};
     signOut: Dispatch<SetStateAction<{}>>
 }
@@ -26,8 +28,9 @@ interface contextProps {
 
 const GlobalContext = createContext<contextProps>({
     tag:[],
+    getsession:()=>{},
     signOut:()=>{},
-    profilePath:{},
+    profilePath: null,
     setSession:()=>{},
     session:null,
     setTag:(): Tag[]=>[],
@@ -40,7 +43,7 @@ const GlobalContext = createContext<contextProps>({
 export const GlobalContextProvider = ({children}: Props)=>{
     const [tag, setTag] = useState<[]|Tag[]>([])
     const [isAuth, setAuth] = useState<false | boolean>(false)
-    const [profile, setProfile] = useState<[] | any>([])
+    const [profile, setProfile] = useState([])
     const [profilePath, setProfilePath] = useState(null)
     const [session, setSession] = useState(null)
     const router = useRouter()
@@ -55,13 +58,11 @@ export const GlobalContextProvider = ({children}: Props)=>{
     
     async function getsession(){
         const {data, error} = await clientSupabase.auth.getSession()
-        // console.log()
         if(!!data.session){
-            setSession(data.session)
+            const user = data.session as sessionType
             const profileData = (await clientSupabase.from('profiles').select().eq('id', data.session.user.id)).data
             if(!!profileData){
                 const profilePicture = profileData[0].avatar_url
-                // console.log(!!profileData[0].avatar_url)
                 if(!!profilePicture){
                     setProfile(profileData)
                     const { data } = clientSupabase
@@ -72,9 +73,9 @@ export const GlobalContextProvider = ({children}: Props)=>{
                     setAuth(true)
                 }else{
                     setAuth(false)
+                    console.log('this is running session')
                     router.push(`/profile/${data.session.access_token}`)
                 }
-
             }
         }else{
             setSession(null)
@@ -86,8 +87,6 @@ export const GlobalContextProvider = ({children}: Props)=>{
 
     async function signOut(){
         const {error} = await clientSupabase.auth.signOut()
-        console.log(!!error)
-        console.log(error)
         if(!error){
             setAuth(false)
             setSession(null)
@@ -100,7 +99,7 @@ export const GlobalContextProvider = ({children}: Props)=>{
     }
 
     return(
-        <GlobalContext.Provider value={{tag, setTag, profile, setProfile,isAuth, setAuth, setSession, session, profilePath, signOut}}>
+        <GlobalContext.Provider value={{tag, setTag, profile, setSession,setProfile,isAuth, setAuth, getsession, session, profilePath, signOut}}>
             {children}
         </GlobalContext.Provider>    
     )

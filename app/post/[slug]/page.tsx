@@ -6,10 +6,8 @@ import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { PortableTextComponent } from "@/app/components/RichText";
-import Link from "next/link";
 import PostFunctions from "@/app/components/PostFunctions";
 import CommentsForm from '@/app/components/CommentsForm'
-import clientSupabase from "@/app/lib/supabaseConfig";
 
 export const revalidate = 60
 
@@ -53,10 +51,10 @@ export default async function SlugPage({
                   <AvatarFallback>{data.author.name}</AvatarFallback>
               </Avatar>
               <div className="mx-3">
-                <Link href={`/author/${data.author.slug.current}`}>
+                {/* <Link href={`/author/${data.author.slug.current}`}> */}
                 <h1 className="text-2xl font-semibold tracking-wide">{data.author.name}</h1>
                 <p className="opacity-70 text-xs">Author</p>
-                </Link>
+                {/* </Link> */}
               </div>
             </div>
           </div>
@@ -69,7 +67,7 @@ export default async function SlugPage({
               components={PortableTextComponent}
             />
         </div>
-        <div className="my-5 mb-16">
+        <div className="my-5 mb-16" id="#comments">
           <CommentsForm data={data}/>
         </div>
         </div>

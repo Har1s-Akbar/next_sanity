@@ -76,12 +76,29 @@ export interface TopPicksType{
 }
 
 export interface profileArray{
-  
+  id: string
+  avatar_url:string;
+  username:string;
+  full_name:string;
 }
 
-export interface ProfileInterface {
+
+export interface ProfileType {
   id: string;
   avatar_url:string;
   username:string;
   full_name:string;
+}
+
+export interface sessionType {
+  access_token: string;
+  user:{}
+}
+
+export interface userType{
+  id: string
+}
+
+export interface profilepathType{
+  publicUrl: string
 }

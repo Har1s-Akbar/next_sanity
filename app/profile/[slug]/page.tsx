@@ -22,11 +22,13 @@ import Link from 'next/link'
 import clientSupabase from '@/app/lib/supabaseConfig'
 import { v4 as uuidv4, v4 } from "uuid";
 
+
+
 export default function Login() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const supabase = createClientComponentClient()
-  const [file, setfile] = useState<File | []>([])
+  const [file, setfile] = useState<File | any>([])
   const formSchema = z.object({
     name: z.string().max(15,{
         message:"can not be of more tha 15 characters"

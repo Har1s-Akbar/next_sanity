@@ -1,13 +1,8 @@
 "use client"
 
 import Image from 'next/image'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
 import {
   HoverCard,
   HoverCardContent,
@@ -22,13 +17,18 @@ import {
 import Link from 'next/link'
 import Themebutton from './ThemeButton'
 import { useGlobalContext } from '../context/context'
-import clientSupabase from '../lib/supabaseConfig'
 import { Separator } from '@/components/ui/separator'
 import { useRouter } from "next/navigation"
 
 function Nav() {
   const router = useRouter()
-  const {profile, profilePath, isAuth, signOut} = useGlobalContext()
+  const {profile, profilePath, isAuth, signOut, getsession} = useGlobalContext()
+  // const handleRefresh = () => {
+  //   router.refresh()
+  // };
+  // useEffect(()=>{handleRefresh(),[isAuth]})
+  useEffect(()=> {getsession()},[isAuth])
+
 
   return (
     <main className='grid grid-cols-footer items-center justify-between w-11/12 m-auto mb-10'>
@@ -69,25 +69,21 @@ function Nav() {
           <HoverCardTrigger asChild>
             <Button variant="link" className='drop-shadow-lg'>
               {profilePath === null ? <span></span>: 
-              <Image src={profilePath.publicUrl} className='rounded-full border-3 mx-5 mr-20 border-yellow-600' alt={item.full_name} width={50} height={50}/>}
+              <Image src={profilePath.publicUrl} className='rounded-full border-3 w-auto mx-5 mr-20 border-yellow-600' alt={item.full_name} width={50} height={50}/>}
             </Button>
           </HoverCardTrigger>
           <HoverCardContent className="w-44">
-            <div className="flex justify-between flex-col space-x-4">
-              <div className='flex justify-between items-center'>
-                <Avatar>
-                  <AvatarImage src={profilePath.publicUrl} />
-                  <AvatarFallback>{item.full_name}</AvatarFallback>
-                </Avatar>
-                <div className="space-y-1">
-                  <div className='flex justify-between w-5/12 items-center'>
-                    <h4 className="text-sm font-semibold">{item.full_name}</h4>
-                    <span>-</span>
-                    <p className='text-sm opacity-60 italic'>@{item.username}</p>
+            <div className="flex justify-between flex-col space-x-4 space-y-4">
+              <div className='flex justify-center items-center'>  
+                <Image src={profilePath.publicUrl} className='rounded-full border-3 w-auto border-yellow-600' alt={item.full_name} width={50} height={50}/>
+                <div className="space-y-1 w-32">
+                  <div className='flex justify-between items-center flex-col'>
+                    <h4 className="text-xs font-semibold">{item.full_name}</h4>
+                    <p className='text-xs opacity-60 italic'>@{item.username}</p>
                   </div>
                 </div>
               </div>
-              <Separator className='my-2 w-full border-3 border-white mx-auto'/>
+              <Separator className=' space-y-4 w-28 m-auto'/>
               <Button onClick={signOut}>
                   Sign Out
               </Button>

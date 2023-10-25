@@ -52,8 +52,6 @@ export default function CommentsForm({data}: any) {
   useMemo(()=> getCommentData(), [])
 // console.log(session)
   const addComment = async() =>{
-    // const isAuthenticated = (await clientSupabase.auth.getSession()).data
-    const userId = session.user.id
     if(!!session){
       const name = profile[0].full_name
       if(!!name){
@@ -69,6 +67,7 @@ export default function CommentsForm({data}: any) {
   }
 
   return (
+    <section>
       <Tabs defaultValue="account" className="w-1/2 m-auto">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="add">Add Comment</TabsTrigger>
@@ -162,5 +161,6 @@ export default function CommentsForm({data}: any) {
           </Card>
         </TabsContent>
       </Tabs>
+    </section>
   )
 }
