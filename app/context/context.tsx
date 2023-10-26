@@ -58,7 +58,9 @@ export const GlobalContextProvider = ({children}: Props)=>{
     
     async function getsession(){
         const {data, error} = await clientSupabase.auth.getSession()
+        // console.log(data, error)
         if(!!data.session){
+            setSession(data.session)
             const user = data.session as sessionType
             const profileData = (await clientSupabase.from('profiles').select().eq('id', data.session.user.id)).data
             if(!!profileData){
@@ -70,7 +72,6 @@ export const GlobalContextProvider = ({children}: Props)=>{
                     .from('profiles')
                     .getPublicUrl(profilePicture)
                     setProfilePath(data)
-                    console.log(profile)
                     setAuth(true)
                     // router.push('/')
                 }else{

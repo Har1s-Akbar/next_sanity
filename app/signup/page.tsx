@@ -75,7 +75,7 @@ function page() {
     <main className='w-1/2 mx-auto'>
       <div className="flex flex-col items-center justify-center">
         <h1 className='text-2xl my-3 font-semibold text-center'>Sign Up</h1>
-        <p className="text-sm font-thin opacity-80 my-2">Sign Up to your already created account</p>
+        <p className="text-sm font-thin opacity-80 my-2">Sign Up to create an account</p>
       </div>
       <Separator className="my-3"/>
       <section>
@@ -130,7 +130,7 @@ function page() {
           </Form>
           </div>
           <div className="flex flex-col items-center justify-center my-4">
-            <Link href='/' className="opacity-70 text-xs text-green-300 my-2 text-center underline decoration-green-300">
+            <Link href='/reset' className="opacity-70 text-xs text-green-300 my-2 text-center underline decoration-green-300">
               Forgot Your Password?
             </Link>
             <Link href='/signin' className="opacity-70 text-xs text-green-300 my-2 text-center underline decoration-green-300">

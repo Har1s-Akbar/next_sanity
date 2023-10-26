@@ -20,9 +20,9 @@ function Cover({data}:{data: Post[]}) {
         <div>
           <div className='relative group'>
             <Link href={`/post/${data[0].slug.current}`}>
-            <Image className='rounded-lg group-hover:brightness-75 ease-in-out delay-150 duration-150' priority={true} src={urlFor(data[0].mainImage).width(2000).height(700).url()} alt={data[0].title} height={2000} width={2000}/>
+            <Image className='rounded-lg group-hover:brightness-75 ease-in-out delay-150 duration-150' priority={true} src={urlFor(data[0].mainImage).width(2000).height(1500).url()} alt={data[0].title} height={2000} width={2000}/>
             </Link>
-            <div className=' absolute inset-y-36 p-6 rounded-r-lg group-hover:opacity-90 ease-in-out delay-75 duration-75 opacity-75 bg-zinc-600'>
+            <div className='absolute md:inset-y-36 inset-y-0 md:p-6 rounded-r-lg group-hover:opacity-90 ease-in-out delay-75 duration-75 opacity-75 bg-zinc-600'>
               <div className='mb-3 flex items-center justify-between'>
                 <div className=' flex items-center'>
                   <Avatar>
@@ -30,11 +30,11 @@ function Cover({data}:{data: Post[]}) {
                       <AvatarFallback>{data[0].author.name}</AvatarFallback>
                   </Avatar>
                   <p className="text-sm mx-2 font-semibold">{data[0].author.name}</p>
-                  <p className="text-sm mx-2 opacity-80 italic">{new Date(data[0].publishedAt).toDateString()}</p>
+                  <p className="md:text-sm text-xs mx-2 opacity-80 italic">{new Date(data[0].publishedAt).toDateString()}</p>
                 </div>
                 <p className="text-sm mx-2 text-sky-300 animate-pulse font-semibold italic">Latest</p>
               </div>
-                <h1 className='font-bold text-4xl my-2'>{data[0].title}</h1>
+                <h1 className='font-bold text-xl md:text-4xl my-2'>{data[0].title}</h1>
                 {data[0].categories.map((item)=>{
                   return <Link href={`/tags/${item.slug.current}`}>
                             <Badge key={item._id} className='mr-3 my-2'>{item.title}</Badge>

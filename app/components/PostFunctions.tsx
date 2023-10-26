@@ -31,9 +31,7 @@ function PostFunctions({data}: any) {
             }
           }).then(async(result) => {
             const existPost : any = (await clientSupabase.from('posts').select().eq('post_id', id)).data
-            const existComment = (await clientSupabase.from('comments').select().eq('post_id', id)).data
-            // console.log(!!existPost.length && !!existComment.length)
-            if(!!existComment.length && !!existPost.length){
+            if(!!existPost.length){
               if(!!existPost.likes){
                 setLikes(existPost.likes)
               }else{
@@ -41,7 +39,6 @@ function PostFunctions({data}: any) {
               }
             }else{
               const postAdded = (await clientSupabase.from('posts').insert({post_id: id}).select()).data
-              const commentAdded = (await clientSupabase.from('comments').insert({post_id: id}).select()).data
             }
           })
         }

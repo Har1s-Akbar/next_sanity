@@ -31,7 +31,7 @@ function Nav() {
 
 
   return (
-    <main className='grid grid-cols-footer items-center justify-between w-11/12 m-auto mb-10'>
+    <main className='grid grid-cols-footer items-center justify-between w-11/12 m-auto mb-10 hidden md:grid'>
       <div className=' py-5 w-full'>
         <h1 className='text-xl font-semibold opacity-60 text-foreground w-1/4 subpixel-antialiased'>Text & Texture</h1>
       </div>

@@ -27,8 +27,8 @@ export default async function RootLayout({
       >
         <GlobalContextProvider>
           <Providers>
-            <Navbar />
-            <main className="flex mx-auto px-4 sm:px-6 lg:px-8 justify-between">
+            <Navbar/>
+            <main className="flex overflow-hidden mx-auto px-4 sm:px-6 lg:px-8 justify-between">
                 {children}
             </main>
           </Providers>

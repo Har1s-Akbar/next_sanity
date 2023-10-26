@@ -1,5 +1,19 @@
 'use client'
-import { useState, useMemo, useId } from "react"
+
+import { ReloadIcon } from "@radix-ui/react-icons"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
+import { useState, useMemo} from "react"
 import { Button } from "@/components/ui/button"
 import verified from '../_asset/verified.svg'
 import Image from "next/image"
@@ -30,34 +44,47 @@ import { useGlobalContext } from "../context/context"
 
 export default function CommentsForm({data}: any) {
   const {profile, isAuth, session} = useGlobalContext()
-  const [comment, setComment] = useState(null);
+  const [commentBtn, setCommentbtn] = useState('');
+  const [commentRender, setcmtrender] = useState(false);
   const [commentData, setCommentData] = useState([])
   const [render, setRender] = useState(false)
   const postId = data._id
   const id = data._id
 
+  const formSchema = z.object({
+    comments: z.string().min(13, {
+      message: "comment must be atleast 14 characters!!",
+    }),
+  })
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema)
+  })
+
   const getCommentData = async() =>{
-    const {data, error} = await clientSupabase.from('comments').select('comments').eq('post_id', postId)
-    console.log(!!data.length)
-    if(!data.length){
-      setCommentData([])
-    }else if(!!data[0].comments){
-      setCommentData(data[0].comments)
+    const {data, error} = await clientSupabase.from('comments').select(`comment, user_id(full_name)`).eq('post_id', postId)
+    // console.log(data)
+    if(!!data.length){
+      setCommentData(data)
       setRender(true)
     }else{
+      setRender(false)
       return commentData
     }
   }
 
   useMemo(()=> getCommentData(), [])
-// console.log(session)
-  const addComment = async() =>{
+  const addComment = async(values: z.infer<typeof formSchema>) =>{
+    setCommentbtn('adding')
+    setcmtrender(true)
     if(!!session){
-      const name = profile[0].full_name
-      if(!!name){
-        const {data, error} = await clientSupabase.rpc('append_comments', {post_id_input : postId, jsonb_data: {name: name, comment: comment}})
-        setRender(true)
-        setCommentData(data[0].comments)
+      const user_id = session.user.id
+      if(!!user_id){
+        const {data, error} = await clientSupabase.from('comments').insert({post_id:postId, comment: values.comments, user_id:user_id})
+        // console.log(!!data)
+        if(!error){
+          getCommentData()
+          setcmtrender(false)
+        }
       }else{
         console.log('can not add comment')
       }
@@ -83,22 +110,37 @@ export default function CommentsForm({data}: any) {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-2">
-                      <form>
-                      <div className="grid w-full items-center gap-4">
-                        <div className="flex flex-col space-y-1.5 my-4">
-                          <Textarea placeholder="Type your message here." id="message-2" onChange={(e)=>{setComment(e.target.value)}}/>
-                        <p className="text-sm text-muted-foreground">
-                            Your comment will be live once it get's appproved by the team.
-                        </p>
-                        </div>
-                      </div>
-                  </form>
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(addComment)} className="space-y-8">
+                      <FormField
+                        control={form.control}
+                        name="comments"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Comment</FormLabel>
+                            <FormControl>
+                              <Textarea placeholder="Type your comment here." {...field}/>
+                              {/* <Input placeholder="shadcn"  /> */}
+                            </FormControl>
+                            <FormDescription>
+                              Your comments will be public
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      {
+                        commentRender ?
+                        <Button className="w-full" disabled>
+                            <ReloadIcon className="mr-2 h-4 w-4 animate-spin"/>
+                              Adding
+                        </Button>
+                        :
+                      <Button type="submit" className="w-full">Submit</Button>
+                      }
+                    </form>
+                  </Form>
                   </CardContent>
-                  <CardFooter>
-                    <div className="m-auto">
-                      <Button onClick={addComment}>Post</Button>
-                    </div>
-                  </CardFooter>
                 </Card>
              : 
                 <Card>
@@ -144,7 +186,7 @@ export default function CommentsForm({data}: any) {
                   <div>
                   {commentData.map((item)=>{
                     return <Alert className="bg-zinc-900 my-2">
-                    <AlertTitle className="text-lg underline">{item.name}</AlertTitle>
+                    <AlertTitle className="text-lg underline">{item.user_id.full_name}</AlertTitle>
                     <AlertDescription>
                       {item.comment}
                     </AlertDescription>

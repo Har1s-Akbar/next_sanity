@@ -4,7 +4,6 @@ import { Separator } from "@/components/ui/separator"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -34,42 +33,40 @@ function page() {
       email: z.string().min(5, {
         message: "invalid mail. Only accepts gmail",
       }).email(),
-      password: z.string().min(4,{
-        message:'password should be more than 4 characters'
-      })
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
       defaultValues: {
-        email: "",
-        password:""
+        email: ""
       },
     })
 
     const onSubmit = async(values: z.infer<typeof formSchema>)=> {
-      setloading(true)
-      const {data, error} = await clientSupabase.auth.signInWithPassword({
-        email: values.email,
-        password: values.password
-      })
-      if(!!data.user){
-        getsession()
-        setloading(false)
-        setAuth(false)
-        router.push('/')
-      }else{
-        setloading(false)
-        seterrorMsg(error.message)
-        setshowerror(true)
-      }
+      seterrorMsg('Working on this feature')
+      setshowerror(true)
+      // setloading(true)
+      // const {data, error} = await clientSupabase.auth.signInWithPassword({
+      //   email: values.email,
+      //   password: values.password
+      // })
+      // if(!!data.user){
+      //   getsession()
+      //   setloading(false)
+      //   setAuth(false)
+      //   router.push('/')
+      // }else{
+      //   setloading(false)
+      //   seterrorMsg(error.message)
+      //   setshowerror(true)
+      // }
       }
 
   return (
     <main className='w-1/2 mx-auto'>
         <div className="flex flex-col items-center justify-center">
-          <h1 className='text-2xl my-3 font-semibold text-center'>Sign In</h1>
-          <p className="text-sm font-thin opacity-80 my-2">Sign In to your already created account</p>
+          <h1 className='text-2xl my-3 font-semibold text-center'>Reset Password</h1>
+          <p className="text-sm font-thin opacity-80 my-2">Reset your account's password</p>
         </div>
       <Separator className="my-3"/>
       <section>
@@ -95,37 +92,23 @@ function page() {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input placeholder="your password" type="password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
               {
                 loading?
               <Button className="w-full" disabled>
               <ReloadIcon className="mr-2 h-4 w-4 animate-spin"/>
-                Signing In
+                Sending..
               </Button>
               :
               <Button type="submit" className="w-full">
-                Sign In
+                Reset Password
               </Button>
-
               }
             </form>
           </Form>
           </div>
           <div className="flex flex-col items-center justify-center my-4">
-            <Link href='/reset' className="opacity-70 text-xs text-green-300 my-2 text-center underline decoration-green-300">
-              Forgot Your Password?
+            <Link href='/signin' className="opacity-70 text-xs text-green-300 my-2 text-center underline decoration-green-300">
+            Already have an account? sign in
             </Link>
             <Link href='/signup' className="opacity-70 text-xs text-green-300 my-2 text-center underline decoration-green-300">
               Don't have an account? Sign Up
