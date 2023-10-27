@@ -3,6 +3,7 @@ import { Providers } from "./components/Providers";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { GlobalContextProvider } from "./context/context";
+import MobileNav from "./components/MobileNav";
 
 const inter = Inter({ subsets: ["latin"],
                       preload:true
@@ -28,6 +29,7 @@ export default async function RootLayout({
         <GlobalContextProvider>
           <Providers>
             <Navbar/>
+            <MobileNav/>
             <main className="flex overflow-hidden mx-auto px-4 sm:px-6 lg:px-8 justify-between">
                 {children}
             </main>

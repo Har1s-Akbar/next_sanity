@@ -17,7 +17,7 @@ import { Post} from '../lib/interface'
 
 function BlogList({data}:{data : Post[]}) {
     return (
-        <main className='flex items-center flex-col justify-center hidden'>
+        <main className='flex items-center flex-col justify-center'>
             <div className='flex flex-col items-center'>
             {data.map((item)=>{
             return <Card className='my-5 w-full md:w-10/12'>

@@ -36,6 +36,7 @@
     "clsx": "^2.0.0",
     "eslint": "8.43.0",
     "eslint-config-next": "13.4.7",
+    "framer-motion": "^10.16.4",
     "next": "13.4.7",
     "next-redux-wrapper": "^8.1.0",
     "next-sanity": "^5.0.2",
