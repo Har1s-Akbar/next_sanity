@@ -36,8 +36,8 @@ function Cover({data}:{data: Post[]}) {
                 <p className="text-sm mx-2 text-sky-300 animate-pulse font-semibold italic">Latest</p>
               </div>
                 <h1 className='font-bold text-left text-white text-xl md:text-4xl my-2'>{data[0].title}</h1>
-                {data[0].categories.map((item)=>{
-                  return <Link href={`/tags/${item.slug.current}`}>
+                {data[0].categories.map((item, index)=>{
+                  return <Link key={index} href={`/tags/${item.slug.current}`}>
                             <Badge key={item._id} className='mr-3 my-2'>{item.title}</Badge>
                       </Link>
                   })}

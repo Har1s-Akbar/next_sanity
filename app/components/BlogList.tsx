@@ -19,8 +19,8 @@ function BlogList({data}:{data : Post[]}) {
     return (
         <main className='flex items-center flex-col justify-center'>
             <div className='flex flex-col items-center'>
-            {data.map((item)=>{
-            return <Card className='my-5 w-full md:w-10/12'>
+            {data.map((item, index)=>{
+            return <Card key={index} className='my-5 w-full md:w-10/12'>
                   <Link href={`/post/${item.slug.current}`}>
               <div className='md:flex grid grid-cols-1 items-center w-full'>
                 <CardHeader className=''>

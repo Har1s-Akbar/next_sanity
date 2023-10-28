@@ -15,7 +15,7 @@ export function TopPicks({data}:{data:TopPicksType[]}) {
         </div>
         <Separator className="my-5"/>
             <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-3">{data.map((top, index)=>{
-                return <div className="flex flex-col items-center">
+                return <div key={index} className="flex flex-col items-center">
                     <div className="flex flex-col items-start justify-center">
                         <div className="flex items-center">
                             <p className="mx-2 text-xl">{index + 1})</p>
@@ -25,7 +25,7 @@ export function TopPicks({data}:{data:TopPicksType[]}) {
                     </div>
                     <div className="">
                         {top.posts.map((post : any)=>{
-                            return <Link id={post.slug.current} href={`/post/${post.slug.current}`}>
+                            return <Link key={post.slug.current} href={`/post/${post.slug.current}`}>
                             <div className="my-2 relative group">
                                 <div className="">    
                                  <Image src={urlFor(post.mainImage).width(400).height(800).url()} className="rounded-lg hover:brightness-75 ease-in-out delay-75 duration-75 w-full h-auto" alt={post.title} width="0" height="0" sizes="100vw"/>

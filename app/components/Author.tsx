@@ -20,8 +20,8 @@ export function Author({data}:{data: Author[]}) {
     <div className="mt-2 mb-5 flex flex-col items-center w-11/12">
         <h1 className="text-3xl font-semibold my-5">Authors</h1>
         <div className="grid grid-cols-2 gap-x-5 gap-y-2">
-        {data.map((item)=>{
-            return <HoverCard>
+        {data.map((item, index)=>{
+            return <HoverCard key={index}>
             {/* <Link href={`/author/${item.slug.current}`}>   */}
         <HoverCardTrigger asChild>
             <Button variant="ghost" className="py-5 px-6">
