@@ -43,8 +43,8 @@ function BlogList({data}:{data : Post[]}) {
               </div>
             </Link>
               <CardFooter>
-              {item.categories.map((item)=>{
-                return <Link href={`/tags/${item.slug.current}`}>
+              {item.categories.map((item, index)=>{
+                return <Link key={index} href={`/tags/${item.slug.current}`}>
                           <Badge key={item._id} className='mx-3'>{item.title}</Badge>
                       </Link>
                 })}

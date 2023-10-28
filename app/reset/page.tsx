@@ -65,7 +65,7 @@ function Page() {
   return (
     <main className='md:w-1/2 mx-auto'>
         <div className="flex flex-col items-center justify-center">
-          <h1 className='text-2xl my-3 font-semibold text-center'>Reset Password</h1>
+          <h1 className="text-2xl my-3 font-semibold text-center">Reset Password</h1>
           <p className="text-sm font-thin opacity-80 my-2">Reset your account's password</p>
         </div>
       <Separator className="my-3"/>
