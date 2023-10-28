@@ -86,7 +86,7 @@ export const GlobalContextProvider = ({children}: Props)=>{
         }
     }
 
-    useEffect(()=>{getsession()}, [isAuth])
+    useEffect(()=>{getsession()}, [isAuth,getsession])
 
     async function signOut(){
         const {error} = await clientSupabase.auth.signOut()

@@ -53,7 +53,7 @@ const childAnimate={
     const router = useRouter()
     const [isOpen, setOpen] = useState(false)
   const {profile, profilePath, isAuth, signOut, getsession} = useGlobalContext()
-  useEffect(()=> {getsession()},[isAuth])
+  useEffect(()=> {getsession()},[isAuth, getsession])
 
 
   return (
@@ -87,8 +87,8 @@ const childAnimate={
           <div className='my-2'>
               {isAuth ? 
               profile.map((item : any)=>{
-                return <div className='flex w-7/12 my-5 items-center justify-center'>
-                <HoverCard key={item.id}>
+                return <div key={item.id} className='flex w-7/12 my-5 items-center justify-center'>
+                <HoverCard>
                 <HoverCardTrigger asChild>
                   <Button variant="link" className='drop-shadow-lg'>
                     {profilePath === null ? <span></span>: 

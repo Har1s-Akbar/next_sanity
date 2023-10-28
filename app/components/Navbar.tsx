@@ -23,11 +23,7 @@ import { useRouter } from "next/navigation"
 function Nav() {
   const router = useRouter()
   const {profile, profilePath, isAuth, signOut, getsession} = useGlobalContext()
-  // const handleRefresh = () => {
-  //   router.refresh()
-  // };
-  // useEffect(()=>{handleRefresh(),[isAuth]})
-  useEffect(()=> {getsession()},[isAuth])
+  useEffect(()=> {getsession()},[isAuth,getsession])
 
 
   return (

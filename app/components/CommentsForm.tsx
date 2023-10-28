@@ -74,7 +74,7 @@ export default function CommentsForm({data}: any) {
 
   useMemo(()=> {
     getCommentData()
-  }, [])
+  }, [getCommentData])
   const addComment = async(values: z.infer<typeof formSchema>) =>{
     setCommentbtn('adding')
     setcmtrender(true)
