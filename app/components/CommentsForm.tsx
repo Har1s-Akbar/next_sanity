@@ -72,7 +72,9 @@ export default function CommentsForm({data}: any) {
     }
   }
 
-  useMemo(()=> getCommentData(), [])
+  useMemo(()=> {
+    getCommentData()
+  }, [])
   const addComment = async(values: z.infer<typeof formSchema>) =>{
     setCommentbtn('adding')
     setcmtrender(true)
@@ -184,8 +186,8 @@ export default function CommentsForm({data}: any) {
                 <CardContent className="space-y-2 my-5">
                   {render?
                   <div>
-                  {commentData.map((item)=>{
-                    return <Alert className="dark:bg-zinc-900 my-2">
+                  {commentData.map((item, index)=>{
+                    return <Alert key={index} className="dark:bg-zinc-900 my-2">
                     <AlertTitle className="text-lg underline">{item.user_id.full_name}</AlertTitle>
                     <AlertDescription>
                       {item.comment}

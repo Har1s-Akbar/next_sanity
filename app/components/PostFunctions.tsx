@@ -18,32 +18,35 @@ function PostFunctions({data}: any) {
   const id = data._id
   const [likes, setLikes] = useState([])
 
-  const AddSupabase = async()=>{
-    if(data.inSupabase){
-      const likesData = (await clientSupabase.from('posts').select().eq('post_id',id)).data
-      setLikes(likesData[0].likes)
-    }else{
-      const sanityTrueChange = await fetch(process.env.NEXT_PUBLIC_URL + '/api/supabase',{
-            method: 'POST',
-            body: JSON.stringify({id}),
-            headers: {
-              'Content-Type': 'application/json',
+  useMemo(()=>{
+      const AddSupabase = async()=>{
+        if(data.inSupabase){
+          const likesData = (await clientSupabase.from('posts').select().eq('post_id',id)).data
+          setLikes(likesData[0].likes)
+        }else{
+          const sanityTrueChange = await fetch(process.env.NEXT_PUBLIC_URL + '/api/supabase',{
+                method: 'POST',
+                body: JSON.stringify({id}),
+                headers: {
+                  'Content-Type': 'application/json',
+                }
+              }).then(async(result) => {
+                const existPost : any = (await clientSupabase.from('posts').select().eq('post_id', id)).data
+                if(!!existPost.length){
+                  if(!!existPost.likes){
+                    setLikes(existPost.likes)
+                  }else{
+                    setLikes([])
+                  }
+                }else{
+                  const postAdded = (await clientSupabase.from('posts').insert({post_id: id}).select()).data
+                }
+              })
             }
-          }).then(async(result) => {
-            const existPost : any = (await clientSupabase.from('posts').select().eq('post_id', id)).data
-            if(!!existPost.length){
-              if(!!existPost.likes){
-                setLikes(existPost.likes)
-              }else{
-                setLikes([])
-              }
-            }else{
-              const postAdded = (await clientSupabase.from('posts').insert({post_id: id}).select()).data
-            }
-          })
         }
-    }
-    useMemo(()=>{AddSupabase()}, [])
+
+      AddSupabase()
+    }, [])
     const addLike = async() =>{
     const Id = profile[0].id
     const Exists = (await clientSupabase.from('posts').select('likes').eq('post_id', id).contains('likes',[Id])).data

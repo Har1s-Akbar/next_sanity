@@ -25,7 +25,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Separator } from "@/components/ui/separator"
 import { v4 } from "uuid"
 
-function page() {
+function Page() {
   const router = useRouter()
   const [errorMsg, seterrorMsg] = useState('')
   const [showerror, setshowerror] = useState(false)
@@ -149,4 +149,4 @@ function page() {
   )
 }
 
-export default page
+export default Page

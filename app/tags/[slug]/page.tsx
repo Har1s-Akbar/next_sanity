@@ -22,7 +22,7 @@ async function getData(slug: string){
     return data
 }
 
-async function page({
+async function Page({
     params,
   }: {
     params: { slug: string };
@@ -46,4 +46,4 @@ async function page({
   )
 }
 
-export default page
+export default Page

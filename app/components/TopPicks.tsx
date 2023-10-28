@@ -25,10 +25,10 @@ export function TopPicks({data}:{data:TopPicksType[]}) {
                     </div>
                     <div className="">
                         {top.posts.map((post : any)=>{
-                            return <Link href={`/post/${post.slug.current}`}>
+                            return <Link id={post.slug.current} href={`/post/${post.slug.current}`}>
                             <div className="my-2 relative group">
                                 <div className="">    
-                                 <Image src={urlFor(post.mainImage).width(400).height(800).url()} className="rounded-lg hover:brightness-75 ease-in-out delay-75 duration-75" alt={post.title} width={200} height={200}/>
+                                 <Image src={urlFor(post.mainImage).width(400).height(800).url()} className="rounded-lg hover:brightness-75 ease-in-out delay-75 duration-75 w-full h-auto" alt={post.title} width="0" height="0" sizes="100vw"/>
                                 </div>
                                 <div className="w-full bg-zinc-600 opacity-80 group-hover:opacity-90 delay-75 duration-75 absolute top-5 py-5">
                                     <h1 className="font-semibold px-2 w-11/12">{post.title}</h1>
