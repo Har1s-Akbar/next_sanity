@@ -66,7 +66,7 @@ function Page() {
     <main className='md:w-1/2 mx-auto'>
         <div className="flex flex-col items-center justify-center">
           <h1 className="text-2xl my-3 font-semibold text-center">Reset Password</h1>
-          <p className="text-sm font-thin opacity-80 my-2">Reset your account's password</p>
+          <p className="text-sm font-thin opacity-80 my-2">{`Reset your account's password`}</p>
         </div>
       <Separator className="my-3"/>
       <section>
@@ -111,7 +111,7 @@ function Page() {
             Already have an account? sign in
             </Link>
             <Link href='/signup' className="opacity-70 text-xs text-green-300 my-2 text-center underline decoration-green-300">
-              Don't have an account? Sign Up
+              {`Don't have an account? Sign Up`}
             </Link>
           </div>
         </div>

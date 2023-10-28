@@ -10,7 +10,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-
 import { Input } from "@/components/ui/input"
 import { useForm } from "react-hook-form"
 import {ReloadIcon} from '@radix-ui/react-icons'
@@ -128,7 +127,7 @@ function Page() {
               Forgot Your Password?
             </Link>
             <Link href='/signup' className="opacity-70 text-xs text-green-300 my-2 text-center underline decoration-green-300">
-              Don't have an account? Sign Up
+              {`Don't have an account? Sign Up`}
             </Link>
           </div>
         </div>
