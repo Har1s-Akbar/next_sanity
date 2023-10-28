@@ -69,7 +69,7 @@ function PostFunctions({data}: any) {
     }
 
   return (
-  <div className="flex items-center justify-between w-1/2 mx-auto">
+  <div className="flex items-center justify-between w-11/12 md:w-1/2 mx-auto">
     {isAuth ?
     <button
     onClick={addLike}

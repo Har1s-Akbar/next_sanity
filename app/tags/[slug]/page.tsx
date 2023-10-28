@@ -30,15 +30,15 @@ async function page({
     const data = await getData(params.slug) as TagPost
   return (
       <main className="flex w-full justify-center">
-        <div className='flex flex-col w-7/12 items-center mx-auto'>
-          <div className='flex items-center justify-center'>
-              <h1 className='text-3xl my-3 mx-5'>Blogs which are related to</h1>
+        <div className='flex flex-col w-11/12 md:w-7/12 items-center mx-auto'>
+          <div className='flex md:flex-row flex-col items-center justify-center'>
+              <h1 className='text-3xl text-center my-3 md:mx-5'>Blogs which are related to</h1>
               <Badge className='py-2 px-8 mx-4'>{data.title}</Badge>
           </div>
           <BlogList data={data.posts}/>
         </div>
-        <Separator className='w-0.5 mx-10 opacity-70 min-h-screen'/>
-            <div className="w-4/12 flex flex-col items-center sticky top-0">
+        <Separator className='w-0.5 mx-10 hidden md:block opacity-70 min-h-screen'/>
+            <div className="w-4/12 hidden md:flex flex-col items-center sticky top-0">
               <Premium/>
               <Tags/>
             </div>

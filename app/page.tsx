@@ -1,6 +1,6 @@
 import { client } from "./lib/sanity";
 
-export const revalidate = 60
+export const revalidate = 0
 
 import Cover from "./components/Cover";
 import BlogHome from "./components/BlogHome";
@@ -29,6 +29,7 @@ async function getData() {
 export default async function IndexPage() {
   const data = (await getData());
   const author = await fetchAuthor()
+  
   return (
       <main className="flex w-full flex-col justify-center">
         <div className="flex flex-col items-center mx-auto">

@@ -1,6 +1,7 @@
 "use client"
 
 import {motion} from 'framer-motion'
+import { AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
@@ -20,25 +21,33 @@ import Themebutton from './ThemeButton'
 import { useGlobalContext } from '../context/context'
 import { Separator } from '@/components/ui/separator'
 import { useRouter } from "next/navigation"
-import { Cross1Icon, EnvelopeClosedIcon, HamburgerMenuIcon, HomeIcon, TriangleUpIcon } from '@radix-ui/react-icons'
+import { Cross1Icon, EnterIcon, EnvelopeClosedIcon, ExitIcon, HamburgerMenuIcon, HomeIcon, TargetIcon, TriangleUpIcon } from '@radix-ui/react-icons'
 
 function MobileNav() {
   const parentAnimate = {start:{
     opacity:1
   },
   end:{
-    opacity:0
-  }
+    opacity:1,
+    y:0,
+    transition:{type:'spring', bounce:0.2, ease:'linear', stiffness:50, velocity:1, mass:0.5}
+}
 }
 const childAnimate={
   start:{
     opacity:0,
-    y:200    
-},
-    end:{
-        opacity:1,
-        y:0,
-        transition:{type:'spring', bounce:0.2, ease:'linear', stiffness:50, velocity:1, mass:0.5}
+    x:200,
+    // transition:{type:'spring', bounce:0.2, ease:'linear', stiffness:50, velocity:1, mass:0.5}
+  },
+  end:{
+    opacity:1,
+    x:0,
+    transition:{type:'spring', bounce:0.2, ease:'linear', stiffness:50, velocity:1, mass:0.5}
+  },
+  exit:{
+      opacity:0,
+      x:200,
+      transition:{type:'spring', bounce:0.2, ease:'linear', stiffness:50, velocity:1, mass:0.5}
     }
 }
     const router = useRouter()
@@ -48,7 +57,8 @@ const childAnimate={
 
 
   return (
-    <main className='w-11/12 py-4 mx-auto md:hidden'>
+    <main
+    className='w-11/12 py-4 mx-auto md:hidden'>
       <section className='flex items-center justify-between m-auto'>
         <div className='w-full'>
           <h1 className='text-xl font-semibold opacity-60 text-foreground w-1/4 subpixel-antialiased'>Text & Texture</h1>
@@ -57,17 +67,28 @@ const childAnimate={
           <Button variant='ghost' className={isOpen ? 'hidden':'block'} onClick={()=>{setOpen(!isOpen)}}>
             <HamburgerMenuIcon/>
           </Button>
-          <motion.div variants={parentAnimate} className={isOpen ? 'flex flex-col items-start absolute z-10 bg-zinc-950 rounded w-44 top-0 right-0 h-96' : 'hidden'}>
+          <AnimatePresence>
+          {
+            isOpen && 
+          <motion.div
+          initial='start'
+          animate='end'
+          exit='exit'
+          variants={childAnimate}
+          className='flex flex-col drop-shadow-2xl shadow-2xl items-start absolute z-10 bg-white dark:bg-zinc-900 rounded w-44 top-0 right-0 h-96'>
+          {/* </AnimatePresence> */}
             <div>
               <Button variant='ghost' onClick={()=> setOpen(false)}>
                 <Cross1Icon/>
               </Button>
               <Separator className='w-60'/>
             </div>
-          <div className='flex w-7/12 my-5 items-center justify-center'>
+          <div className='my-2'>
+          <div className='my-2'>
               {isAuth ? 
               profile.map((item : any)=>{
-                return  <HoverCard key={item.id}>
+                return <div className='flex w-7/12 my-5 items-center justify-center'>
+                <HoverCard key={item.id}>
                 <HoverCardTrigger asChild>
                   <Button variant="link" className='drop-shadow-lg'>
                     {profilePath === null ? <span></span>: 
@@ -87,22 +108,32 @@ const childAnimate={
                     </div>
                     <Separator className=' space-y-4 w-28 m-auto'/>
                     <Button onClick={signOut}>
-                        Sign Out
+                        <ExitIcon/>
+                        <p className='mx-2'>
+                          Sign Out
+                        </p>
                     </Button>
                   </div>
                 </HoverCardContent>
               </HoverCard>
+                </div> 
               })
               :
-            <div className='flex justify-between items-center w-full ml-3 m-auto'>
-              <button className='text-foreground py-2 px-3 hover:bg-foreground border-2 delay-200 duration-200 hover:text-secondary rounded-lg bg-secondary'>
-                <Link href='/signin'>
+            <div className=''>
+              <Link href='/signin'>
+              <Button
+              variant='ghost'
+              // className='text-foreground py-2 px-3 hover:bg-foreground border-2 delay-200 duration-200 hover:text-secondary rounded-lg bg-secondary'
+              >
+                <EnterIcon/>
+                <p className='mx-2'>
                   Sign in
+                </p>
+              </Button>
                 </Link>
-              </button>
             </div>}
           </div>
-            <Link href='/'>
+            <Link href='/' className='my-2'>
               <Button variant='ghost'>
                 <HomeIcon/>
                 <p className='mx-2'>
@@ -110,7 +141,7 @@ const childAnimate={
                 </p>
               </Button>
             </Link>
-            <Link href='/top'>
+            <Link href='/top' className='my-2'>
               <Button variant='ghost'>
                 <TriangleUpIcon/>
                 <p className='mx-2'>
@@ -118,7 +149,15 @@ const childAnimate={
                 </p>
               </Button>
             </Link>
-            <Link href='/'>
+            <Link href='/' className='my-2'>
+              <Button variant='ghost'>
+                <TargetIcon/>
+                <p className='mx-2'>
+                  Tags
+                </p>
+              </Button>
+            </Link>
+            <Link href='/' className='my-2'>
               <Button variant='ghost'>
                 <EnvelopeClosedIcon/>
                 <p className='mx-2'>
@@ -126,13 +165,16 @@ const childAnimate={
                 </p>
               </Button>
             </Link>
-            <Button variant='ghost'>
+            <Button variant='ghost' className='my-2'>
               <Themebutton/>
               <p className='mx-2'>
                 Theme
               </p>
             </Button>
+          </div>
           </motion.div>
+          }
+        </AnimatePresence>
         </div>
       </section>
     </main>

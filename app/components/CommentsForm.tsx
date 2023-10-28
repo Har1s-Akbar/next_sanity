@@ -95,7 +95,7 @@ export default function CommentsForm({data}: any) {
 
   return (
     <section>
-      <Tabs defaultValue="account" className="w-1/2 m-auto">
+      <Tabs defaultValue="account" className="md:w-1/2 m-auto">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="add">Add Comment</TabsTrigger>
           <TabsTrigger value="comments">Comments</TabsTrigger>
@@ -185,7 +185,7 @@ export default function CommentsForm({data}: any) {
                   {render?
                   <div>
                   {commentData.map((item)=>{
-                    return <Alert className="bg-zinc-900 my-2">
+                    return <Alert className="dark:bg-zinc-900 my-2">
                     <AlertTitle className="text-lg underline">{item.user_id.full_name}</AlertTitle>
                     <AlertDescription>
                       {item.comment}

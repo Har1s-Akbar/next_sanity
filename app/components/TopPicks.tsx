@@ -14,7 +14,7 @@ export function TopPicks({data}:{data:TopPicksType[]}) {
             <p className="text-base my-2 font-light opacity-80">The stories that are noteworthy</p>
         </div>
         <Separator className="my-5"/>
-            <div className="grid grid-cols-4 gap-3">{data.map((top, index)=>{
+            <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-3">{data.map((top, index)=>{
                 return <div className="flex flex-col items-center">
                     <div className="flex flex-col items-start justify-center">
                         <div className="flex items-center">

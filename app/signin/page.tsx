@@ -66,7 +66,7 @@ function page() {
       }
 
   return (
-    <main className='w-1/2 mx-auto'>
+    <main className='md:w-1/2 w-11/12 mx-auto'>
         <div className="flex flex-col items-center justify-center">
           <h1 className='text-2xl my-3 font-semibold text-center'>Sign In</h1>
           <p className="text-sm font-thin opacity-80 my-2">Sign In to your already created account</p>

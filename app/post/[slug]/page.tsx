@@ -33,18 +33,18 @@ export default async function SlugPage({
   const data = (await getData(params.slug)) as Post;
   
   return (
-    <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
+    <div className="divide-y divide-gray-200 dark:divide-gray-700">
       <div className="relative">
-        <div className="flex items-center pl-20 justify-center">
-          <div className="w-2/5 border-white rounded-lg">
+        <div className="flex flex-col md:flex-row items-center lg:pl-20 justify-center">
+          <div className="lg:w-2/5 w-11/12 border-white rounded-lg">
           <Image src={urlFor(data.mainImage).url()} priority={true} alt={data.title} width={600} height={500} className="rounded-lg h-auto w-auto drop-shadow-2xl w-full"/>
           </div>
-          <div className="m-auto ml-21 w-1/2">
-            <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
+          <div className="m-auto w-11/12 my-2 lg:my-0 lg:ml-21 lg:w-1/2">
+            <h1 className="lg:text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 text-2xl sm:leading-10 md:text-5xl md:leading-14">
               {data.title}
             </h1>
-            <p className="text-sm font-medium opacity-90 w-7/12 my-5 leading-relaxed break-normal align-middle subpixel-antialiased tracking-wide">{data.description}</p>
-            <Separator className="w-1/2 my-5"/>
+            <p className="md:text-sm text-xs font-medium opacity-90 md:w-7/12 my-5 leading-relaxed break-normal align-middle subpixel-antialiased tracking-wide">{data.description}</p>
+            <Separator className="md:w-1/2 w-11/12 my-2 md:my-5"/>
             <div className="flex items-center">
               <Avatar className='w-14 h-14'>
                   <AvatarImage src={urlFor(data.author.image).width(200).height(200).url()} />
@@ -59,9 +59,9 @@ export default async function SlugPage({
             </div>
           </div>
         </div>
-        <Separator className="my-10 w-10/12 mx-auto"/>
+        <Separator className="md:my-10 md:w-10/12 my-3 w-11/12 mx-auto"/>
         <div>
-        <div className="prose max-w-none w-7/12 m-auto pb-8 pt-10 dark:prose-invert prose-lg">
+        <div className="prose md:w-7/12 m-auto md:pb-8 md:pt-10 w-11/12 py-3 dark:prose-invert prose-lg">
             <PortableText
               value={data.body}
               components={PortableTextComponent}
@@ -71,7 +71,7 @@ export default async function SlugPage({
           <CommentsForm data={data}/>
         </div>
         </div>
-      <div className="bg-white rounded-lg drop-shadow-2xl w-1/2 mx-auto h-10 sticky inset-x-0 bottom-5 py-3">
+      <div className="bg-white rounded-lg drop-shadow-2xl w-11/12 md:w-1/2 mx-auto h-10 sticky inset-x-0 bottom-5 py-3">
         <PostFunctions data={data}/>
       </div>
       </div>
