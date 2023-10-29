@@ -53,15 +53,9 @@ export const GlobalContextProvider = ({children}: Props)=>{
         const data = await client.fetch(query);
         setTag(data)
     }
-    
-    useEffect(()=> {getTag()},[])
-    
-    // async function getsession(){
-        
-    // }
+    useEffect(()=> {getTag()},[session])
     const getsession = useCallback(async()=>{
         const {data, error} = await clientSupabase.auth.getSession()
-        // console.log(data, error)
         if(!!data.session){
             setSession(data.session)
             const user = data.session as sessionType
