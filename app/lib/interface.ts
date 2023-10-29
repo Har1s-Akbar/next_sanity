@@ -90,10 +90,10 @@ export interface ProfileType {
   full_name:string;
 }
 
-export interface sessionType {
-  access_token: string;
-  user:{}
-}
+// export interface sessionType {
+//   access_token: string;
+//   user:{}
+// }
 
 export interface userType{
   id: string
@@ -101,4 +101,16 @@ export interface userType{
 
 export interface profilepathType{
   publicUrl: string
+}
+
+export interface sessionType{
+  access_token:string;
+  token_type:string;
+  refresh_token:string;
+  user:{
+    id:string;
+    email:string;
+    email_confirmed_at:string;
+    role:string;
+  };
 }

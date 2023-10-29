@@ -70,7 +70,7 @@ export default function CommentsForm({data}: any) {
         setRender(false)
         return commentData
       }
-  },[])
+  },[postId])
 
   useMemo(()=> {
     getCommentData()
@@ -80,6 +80,7 @@ export default function CommentsForm({data}: any) {
     setcmtrender(true)
     if(!!session){
       const user_id = session.user.id
+      console.log(session)
       if(!!user_id){
         const {data, error} = await clientSupabase.from('comments').insert({post_id:postId, comment: values.comments, user_id:user_id})
         // console.log(!!data)

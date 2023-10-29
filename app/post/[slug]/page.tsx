@@ -40,10 +40,10 @@ export default async function SlugPage({
           <Image src={urlFor(data.mainImage).url()} priority={true} alt={data.title} width={600} height={500} className="rounded-lg h-auto w-auto drop-shadow-2xl w-full"/>
           </div>
           <div className="m-auto w-11/12 my-2 lg:my-0 lg:ml-21 lg:w-1/2">
-            <h1 className="lg:text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 text-2xl sm:leading-10 md:text-5xl md:leading-14">
+            <h1 className="lg:text-4xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 text-2xl sm:leading-10 md:text-3xl md:leading-14">
               {data.title}
             </h1>
-            <p className="md:text-sm text-xs font-medium opacity-90 md:w-7/12 my-5 leading-relaxed break-normal align-middle subpixel-antialiased tracking-wide">{data.description}</p>
+            <p className="md:text-sm text-xs font-medium opacity-90 md:w-9/12 my-5 leading-relaxed break-normal align-middle subpixel-antialiased tracking-wide">{data.description}</p>
             <Separator className="md:w-1/2 w-11/12 my-2 md:my-5"/>
             <div className="flex items-center">
               <Avatar className='w-14 h-14'>

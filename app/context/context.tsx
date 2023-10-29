@@ -21,7 +21,7 @@ interface contextProps {
     profile: profileArray[];
     setProfile: Dispatch<SetStateAction<ProfileType[]>>;
     setSession: Dispatch<SetStateAction<sessionType[]>>;
-    session:{};
+    session:sessionType;
     signOut: Dispatch<SetStateAction<{}>>
 }
 
@@ -87,9 +87,9 @@ export const GlobalContextProvider = ({children}: Props)=>{
             setSession(null)
             setAuth(false)
         }
-    },[])
+    },[isAuth])
 
-    useEffect(()=>{getsession()}, [isAuth,getsession])
+    useEffect(()=>{getsession()}, [getsession])
 
     async function signOut(){
         const {error} = await clientSupabase.auth.signOut()

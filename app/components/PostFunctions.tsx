@@ -44,7 +44,6 @@ function PostFunctions({data}: any) {
               })
             }
         }
-
       AddSupabase()
     }, [id, data.inSupabase])
     const addLike = async() =>{
