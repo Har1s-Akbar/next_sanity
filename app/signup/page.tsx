@@ -138,12 +138,14 @@ function Page() {
             </Link>
           </div>
         </div>
-        {showConfirm &&
-        <p className="opacity-70 text-xs my-3 text-white my-2 text-center underline decoration-green-300">Check your mail for confirmation and setting up profile</p>  
-      }
-        {showerror &&
-        <p className="opacity-70 text-xs my-3 text-white my-2 text-center underline decoration-green-300">{errorMsg}</p>  
-      }
+        <div className="w-7/12 mx-auto">
+          {showConfirm &&
+          <p className="opacity-70 text-xs my-3 text-white my-2 text-center underline decoration-green-300">Check your mail for confirmation and setting up profile</p>  
+        }
+          {showerror &&
+          <p className="opacity-70 text-xs my-3 text-white my-2 text-center underline decoration-green-300">{errorMsg}</p>  
+        }
+        </div>
       </section>
     </main>
   )
