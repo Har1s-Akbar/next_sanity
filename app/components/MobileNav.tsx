@@ -24,29 +24,22 @@ import { useRouter } from "next/navigation"
 import { Cross1Icon, EnterIcon, EnvelopeClosedIcon, ExitIcon, HamburgerMenuIcon, HomeIcon, TargetIcon, TriangleUpIcon } from '@radix-ui/react-icons'
 
 function MobileNav() {
-  const parentAnimate = {start:{
-    opacity:1
-  },
-  end:{
-    opacity:1,
-    y:0,
-    transition:{type:'spring', bounce:0.2, ease:'linear', stiffness:50, velocity:1, mass:0.5}
-}
-}
 const childAnimate={
   start:{
     opacity:0,
-    x:200,
-    // transition:{type:'spring', bounce:0.2, ease:'linear', stiffness:50, velocity:1, mass:0.5}
+    // x:0,
+    y:-5,
+    transition:{type:'spring', bounce:0.2, ease:'linear', stiffness:50, velocity:1, mass:0.5}
   },
   end:{
     opacity:1,
-    x:0,
+    // x:200,
+    y:0,
     transition:{type:'spring', bounce:0.2, ease:'linear', stiffness:50, velocity:1, mass:0.5}
   },
   exit:{
       opacity:0,
-      x:200,
+      y:5,
       transition:{type:'spring', bounce:0.2, ease:'linear', stiffness:50, velocity:1, mass:0.5}
     }
 }
@@ -59,10 +52,10 @@ const childAnimate={
   return (
     <main
     className='w-11/12 py-4 mx-auto md:hidden'>
-      <section className='flex items-center justify-between m-auto'>
-        <div className='w-full'>
+      <section className='flex items-center overflow-hidden justify-between m-auto '>
+        <Link href='/' className='w-full'>
           <h1 className='text-xl font-semibold opacity-60 text-foreground w-1/4 subpixel-antialiased'>Text & Texture</h1>
-        </div>
+        </Link>
         <div className=''>
           <Button variant='ghost' className={isOpen ? 'hidden':'block'} onClick={()=>{setOpen(!isOpen)}}>
             <HamburgerMenuIcon/>
@@ -75,13 +68,13 @@ const childAnimate={
           animate='end'
           exit='exit'
           variants={childAnimate}
-          className='flex flex-col drop-shadow-2xl shadow-2xl items-start absolute z-10 bg-white dark:bg-zinc-900 rounded w-44 top-0 right-0 h-96'>
+          className='flex flex-col drop-shadow-2xl shadow-2xl items-start absolute z-10 bg-white dark:bg-zinc-900 rounded w-44 top-0 right-0 min-h-screen'>
           {/* </AnimatePresence> */}
             <div>
               <Button variant='ghost' onClick={()=> setOpen(false)}>
                 <Cross1Icon/>
               </Button>
-              <Separator className='w-60'/>
+              <Separator className='w-44'/>
             </div>
           <div className='my-2'>
           <div className='my-2'>

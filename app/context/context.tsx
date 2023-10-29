@@ -12,9 +12,7 @@ interface Props {
 }
 
 interface contextProps {
-    tag : Tag[];
     profilePath: profilepathType,
-    setTag : Dispatch<SetStateAction<Tag[]>>;
     isAuth: boolean;
     getsession: ()=>void;
     setAuth: Dispatch<SetStateAction<boolean>>;
@@ -27,13 +25,11 @@ interface contextProps {
 
 
 const GlobalContext = createContext<contextProps>({
-    tag:[],
     getsession:()=>{},
     signOut:()=>{},
     profilePath: null,
     setSession:()=>{},
     session:null,
-    setTag:(): Tag[]=>[],
     isAuth: false,
     setAuth:()=>{},
     profile: [],
@@ -41,19 +37,11 @@ const GlobalContext = createContext<contextProps>({
 })
 
 export const GlobalContextProvider = ({children}: Props)=>{
-    const [tag, setTag] = useState<[]|Tag[]>([])
     const [isAuth, setAuth] = useState<false | boolean>(false)
     const [profile, setProfile] = useState([])
     const [profilePath, setProfilePath] = useState(null)
     const [session, setSession] = useState(null)
     const router = useRouter()
-    
-    async function getTag() {
-        const query = `*[_type == "category"]`;
-        const data = await client.fetch(query);
-        setTag(data)
-    }
-    useEffect(()=> {getTag()},[session])
     const getsession = useCallback(async()=>{
         const {data, error} = await clientSupabase.auth.getSession()
         if(!!data.session){
@@ -99,7 +87,7 @@ export const GlobalContextProvider = ({children}: Props)=>{
     }
 
     return(
-        <GlobalContext.Provider value={{tag, setTag, profile, setSession,setProfile,isAuth, setAuth, getsession, session, profilePath, signOut}}>
+        <GlobalContext.Provider value={{profile, setSession,setProfile,isAuth, setAuth, getsession, session, profilePath, signOut}}>
             {children}
         </GlobalContext.Provider>    
     )

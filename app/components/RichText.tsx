@@ -20,10 +20,10 @@ export const PortableTextComponent = {
         ),
       },
       block:{
-      h1: ({children}:any) => (<h1 className="text-5xl my-5 font-semibold">{children}</h1>),
-      h2: ({children}:any) => (<h2 className="text-4xl my-5 font-semibold">{children}</h2>),
-      h3: ({children}:any) => (<h3 className="text-3xl my-5 font-medium">{children}</h3>),
-      h4: ({children}:any) => (<h4 className="text-2xl my-5">{children}</h4>),
+      h1: ({children}:any) => (<h1 className="text-4xl my-5 font-semibold">{children}</h1>),
+      h2: ({children}:any) => (<h2 className="text-3xl my-5 font-semibold">{children}</h2>),
+      h3: ({children}:any) => (<h3 className="text-2xl my-5 font-medium">{children}</h3>),
+      h4: ({children}:any) => (<h4 className="text-xl my-5">{children}</h4>),
       blockquote: ({children}:any) => (<blockquote className="border-l-yellow-700 italic border-l-4 pl-5 my-10">{children}</blockquote>),
       normal:({children}:any) =>(<p className="leading-7 tracking-normal">{children}</p>)
       },

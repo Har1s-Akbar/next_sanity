@@ -41,8 +41,8 @@ function PostFunctions({data}: any) {
                 }else{
                   const postAdded = (await clientSupabase.from('posts').insert({post_id: id}).select()).data
                 }
-              })
-            }
+            })
+          }
         }
       AddSupabase()
     }, [id, data.inSupabase])

@@ -46,6 +46,7 @@ export interface TagPost{
   };
   title:string;
   posts:any;
+  _id:string;
 }
 
 export interface Author{

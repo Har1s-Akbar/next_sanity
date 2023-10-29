@@ -17,10 +17,10 @@ import { Post} from '../lib/interface'
 
 function BlogList({data}:{data : Post[]}) {
     return (
-        <main className='flex items-center flex-col justify-center'>
+        <main className='flex items-center flex-col justify-center mx'>
             <div className='flex flex-col items-center'>
             {data.map((item, index)=>{
-            return <Card key={index} className='my-5 w-full md:w-10/12'>
+            return <Card key={index} className='my-5 w-11/12 mx-auto md:w-10/12'>
                   <Link href={`/post/${item.slug.current}`}>
               <div className='md:flex grid grid-cols-1 items-center w-full'>
                 <CardHeader className=''>
@@ -34,18 +34,18 @@ function BlogList({data}:{data : Post[]}) {
                     </div>
                     <div className='w-11/12'>
                         <CardTitle className='md:text-2xl text-lg'>{item.title}</CardTitle>
-                        <CardDescription className=' my-2 text-xs'>{(item.description).slice(-90)}...</CardDescription>
+                        <CardDescription className=' mt-2 text-xs'>{(item.description).slice(-90)}...</CardDescription>
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <Image src={urlFor(item.mainImage).url()} width={200} alt={item.title} height={200} className="rounded-lg my-3 drop-shadow"/>
+                    <Image src={urlFor(item.mainImage).url()} width={200} alt={item.title} height={200} className="rounded-lg drop-shadow"/>
                 </CardContent>
               </div>
             </Link>
-              <CardFooter>
+              <CardFooter className='grid grid-cols-2 gap-y-2 lg:grid-cols-5'>
               {item.categories.map((item, index)=>{
                 return <Link key={index} href={`/tags/${item.slug.current}`}>
-                          <Badge key={item._id} className='mx-3'>{item.title}</Badge>
+                          <Badge key={item._id} className='md:mx-3 mx-0'>{item.title}</Badge>
                       </Link>
                 })}
               </CardFooter>

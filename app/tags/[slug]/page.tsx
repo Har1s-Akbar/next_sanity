@@ -22,12 +22,21 @@ async function getData(slug: string){
     return data
 }
 
+
+async function getTag() {
+  const query = `*[_type == "category"]`;
+  const data = await client.fetch(query);
+
+  return data
+}
+
 async function Page({
     params,
   }: {
     params: { slug: string };
   }) {
     const data = await getData(params.slug) as TagPost
+    const tag = await getTag()
   return (
       <main className="flex w-full justify-center">
         <div className='flex flex-col w-11/12 md:w-7/12 items-center mx-auto'>
@@ -40,7 +49,7 @@ async function Page({
         <Separator className='w-0.5 mx-10 hidden md:block opacity-70 min-h-screen'/>
             <div className="w-4/12 hidden md:flex flex-col items-center sticky top-0">
               <Premium/>
-              <Tags/>
+              <Tags data={tag}/>
             </div>
       </main>
   )

@@ -15,7 +15,7 @@ import { Post} from '../lib/interface'
 
 function Cover({data}:{data: Post[]}) {
   return (
-    <main className='mx-auto'>
+    <main className='mx-auto w-11/12'>
       <div className="flex flex-col items-center">
         <div>
           <div className='relative group'>

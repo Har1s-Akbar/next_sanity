@@ -13,6 +13,12 @@ async function fetchAuthor(){
   return data
 }
 
+async function getTag() {
+  const query = `*[_type == "category"]`;
+  const data = await client.fetch(query);
+
+  return data
+}
 
 async function getData() {
   const query = `*[_type == "post"]{
@@ -28,8 +34,8 @@ async function getData() {
 
 export default async function IndexPage() {
   const data = (await getData());
-  const author = await fetchAuthor()
-  
+  const author = await fetchAuthor();
+  const tag = await getTag();  
   return (
       <main className="flex w-full flex-col justify-center">
         <div className="flex flex-col items-center mx-auto">
@@ -37,7 +43,7 @@ export default async function IndexPage() {
         </div>
         <div>
             <div className="w-full flex flex-col items-center">
-              <BlogHome data={{data, author}}/>
+              <BlogHome data={{data, author, tag}}/>
             </div>
         </div>
       </main>

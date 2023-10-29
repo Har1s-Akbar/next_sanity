@@ -30,7 +30,7 @@ export default async function RootLayout({
           <Providers>
             <Navbar/>
             <MobileNav/>
-            <main className="flex overflow-hidden mx-auto px-4 sm:px-6 lg:px-8 justify-between">
+            <main className="flex mx-auto md:px-6 lg:px-8 justify-between">
                 {children}
             </main>
           </Providers>
