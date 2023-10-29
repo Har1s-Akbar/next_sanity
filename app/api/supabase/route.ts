@@ -1,8 +1,8 @@
 import { client } from "@/app/lib/sanity";
 import { NextApiRequest, NextApiResponse } from "next";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextApiRequest) {
+export async function POST(req: NextRequest) {
     
     try{
         const res = await req.json()

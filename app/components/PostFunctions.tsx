@@ -46,7 +46,7 @@ function PostFunctions({data}: any) {
         }
 
       AddSupabase()
-    }, [])
+    }, [id, data.inSupabase])
     const addLike = async() =>{
     const Id = profile[0].id
     const Exists = (await clientSupabase.from('posts').select('likes').eq('post_id', id).contains('likes',[Id])).data

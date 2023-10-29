@@ -1,7 +1,7 @@
 'use client'
 
 import clientSupabase from "../lib/supabaseConfig";
-import React, { Dispatch, ReactNode, SetStateAction, createContext, useContext, useEffect, useState } from "react";
+import React, { Dispatch, ReactNode, SetStateAction, createContext, useCallback, useContext, useEffect, useState } from "react";
 import { ProfileType, Tag, profileArray, sessionType, userType, profilepathType } from "../lib/interface";
 import { client } from "../lib/sanity";
 import { useRouter } from "next/navigation";
@@ -56,7 +56,10 @@ export const GlobalContextProvider = ({children}: Props)=>{
     
     useEffect(()=> {getTag()},[])
     
-    async function getsession(){
+    // async function getsession(){
+        
+    // }
+    const getsession = useCallback(async()=>{
         const {data, error} = await clientSupabase.auth.getSession()
         // console.log(data, error)
         if(!!data.session){
@@ -84,7 +87,7 @@ export const GlobalContextProvider = ({children}: Props)=>{
             setSession(null)
             setAuth(false)
         }
-    }
+    },[])
 
     useEffect(()=>{getsession()}, [isAuth,getsession])
 

@@ -34,7 +34,7 @@ function BlogList({data}:{data : Post[]}) {
                     </div>
                     <div className='w-11/12'>
                         <CardTitle className='md:text-2xl text-lg'>{item.title}</CardTitle>
-                        <CardDescription className='truncate ... my-2 md:text-lg text-xs'>{item.description}</CardDescription>
+                        <CardDescription className=' my-2 text-xs'>{(item.description).slice(-90)}...</CardDescription>
                     </div>
                 </CardHeader>
                 <CardContent>

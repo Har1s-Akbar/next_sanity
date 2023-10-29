@@ -13,7 +13,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { useState, useMemo} from "react"
+import { useState, useMemo, useCallback} from "react"
 import { Button } from "@/components/ui/button"
 import verified from '../_asset/verified.svg'
 import Image from "next/image"
@@ -60,17 +60,17 @@ export default function CommentsForm({data}: any) {
     resolver: zodResolver(formSchema)
   })
 
-  const getCommentData = async() =>{
-    const {data, error} = await clientSupabase.from('comments').select(`comment, user_id(full_name)`).eq('post_id', postId)
-    // console.log(data)
-    if(!!data.length){
-      setCommentData(data)
-      setRender(true)
-    }else{
-      setRender(false)
-      return commentData
-    }
-  }
+  const getCommentData = useCallback(async()=>{
+      const {data, error} = await clientSupabase.from('comments').select(`comment, user_id(full_name)`).eq('post_id', postId)
+      // console.log(data)
+      if(!!data.length){
+        setCommentData(data)
+        setRender(true)
+      }else{
+        setRender(false)
+        return commentData
+      }
+  },[])
 
   useMemo(()=> {
     getCommentData()
